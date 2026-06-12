@@ -27,8 +27,8 @@ namespace LoteriaProyecto
         {
             InitializeComponent();
             juego = new JuegoManager();
-            casillasVisuales = new PictureBox[4, 4];
-            casillasVisuales2 = new PictureBox[4, 4]; // <--- AGREGA ESTA LÍNEA
+            casillasVisuales = new PictureBox[5, 5];
+            casillasVisuales2 = new PictureBox[5, 5];
             CrearTableroEnPantalla();
             CrearTableroEnPantalla2S();
             red = new RedManager();
@@ -57,12 +57,12 @@ namespace LoteriaProyecto
         // Genera los 16 PictureBoxes de forma dinámica en la interfaz
         private void CrearTableroEnPantalla()
         {
-            int tamañoCasilla = 90; // Tamaño en píxeles de cada cartita
+            int tamañoCasilla = 65; // Tamaño en píxeles de cada cartita
             int espacio = 5;       // Separación entre cartitas
 
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     PictureBox pic = new PictureBox();
                     pic.Width = tamañoCasilla;
@@ -89,12 +89,12 @@ namespace LoteriaProyecto
         }
         private void CrearTableroEnPantalla2S()
         {
-            int tamañoCasilla = 90; // Tamaño en píxeles de cada cartita
+            int tamañoCasilla = 65; // Tamaño en píxeles de cada cartita
             int espacio = 5;       // Separación entre cartitas
 
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     PictureBox pic = new PictureBox();
                     pic.Width = tamañoCasilla;
@@ -279,9 +279,9 @@ namespace LoteriaProyecto
             panelTablero2.Visible = jugarConDosTablas;
 
             // Generar y pintar la primera tabla (Siempre se hace)
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                     casillasVisuales[f, c].BackColor = Color.White;
@@ -477,9 +477,9 @@ namespace LoteriaProyecto
             juego.IniciarNuevoJuego();
 
             // Pintamos las imágenes en la pantalla del cliente
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                     casillasVisuales[f, c].BackColor = Color.White;
@@ -542,9 +542,9 @@ namespace LoteriaProyecto
                 List<string> lineas = new List<string>();
 
                 // 1. Guardamos los datos de la TABLA 1 (Marcamos con un prefijo "T1")
-                for (int f = 0; f < 4; f++)
+                for (int f = 0; f < 5; f++)
                 {
-                    for (int c = 0; c < 4; c++)
+                    for (int c = 0; c < 5; c++)
                     {
                         Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                         if (carta != null)
@@ -553,9 +553,9 @@ namespace LoteriaProyecto
                 }
 
                 // 2. Guardamos los datos de la TABLA 2 (Marcamos con un prefijo "T2")
-                for (int f = 0; f < 4; f++)
+                for (int f = 0; f < 5; f++)
                 {
-                    for (int c = 0; c < 4; c++)
+                    for (int c = 0; c < 5; c++)
                     {
                         Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
                         if (carta != null)
@@ -657,9 +657,9 @@ namespace LoteriaProyecto
         private void ActualizarPantallaTableroVisual()
         {
             // 1. Refresco Tabla 1 (Se queda igual)
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                     casillasVisuales[f, c].BackColor = Color.White;
@@ -676,9 +676,9 @@ namespace LoteriaProyecto
             // Solo intenta refrescar la segunda tabla si el objeto existe y tiene cartas adentro
             if (juego.TableroJugador2 != null)
             {
-                for (int f = 0; f < 4; f++)
+                for (int f = 0; f < 5; f++)
                 {
-                    for (int c = 0; c < 4; c++)
+                    for (int c = 0; c < 5; c++)
                     {
                         Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
                         casillasVisuales2[f, c].BackColor = Color.White;
@@ -716,6 +716,11 @@ namespace LoteriaProyecto
             // Lo agregamos al principio del panel para que la más reciente salga primero
             flpHistorialImagenes.Controls.Add(picHistorial);
             flpHistorialImagenes.Controls.SetChildIndex(picHistorial, 0);
+        }
+
+        private void panelTablero_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

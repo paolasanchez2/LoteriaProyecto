@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnIniciar = new System.Windows.Forms.Button();
             this.btnSiguiente = new System.Windows.Forms.Button();
             this.picCartaActual = new System.Windows.Forms.PictureBox();
@@ -54,9 +55,10 @@
             // 
             // btnIniciar
             // 
-            this.btnIniciar.Location = new System.Drawing.Point(1094, 42);
+            this.btnIniciar.Location = new System.Drawing.Point(1231, 52);
+            this.btnIniciar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnIniciar.Name = "btnIniciar";
-            this.btnIniciar.Size = new System.Drawing.Size(125, 27);
+            this.btnIniciar.Size = new System.Drawing.Size(141, 34);
             this.btnIniciar.TabIndex = 0;
             this.btnIniciar.Text = "Iniciar Juego";
             this.btnIniciar.UseVisualStyleBackColor = true;
@@ -64,9 +66,10 @@
             // 
             // btnSiguiente
             // 
-            this.btnSiguiente.Location = new System.Drawing.Point(1094, 75);
+            this.btnSiguiente.Location = new System.Drawing.Point(1231, 94);
+            this.btnSiguiente.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSiguiente.Name = "btnSiguiente";
-            this.btnSiguiente.Size = new System.Drawing.Size(125, 28);
+            this.btnSiguiente.Size = new System.Drawing.Size(141, 35);
             this.btnSiguiente.TabIndex = 1;
             this.btnSiguiente.Text = "Siguiente Carta";
             this.btnSiguiente.UseVisualStyleBackColor = true;
@@ -74,9 +77,10 @@
             // 
             // picCartaActual
             // 
-            this.picCartaActual.Location = new System.Drawing.Point(1094, 203);
+            this.picCartaActual.Location = new System.Drawing.Point(1231, 254);
+            this.picCartaActual.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.picCartaActual.Name = "picCartaActual";
-            this.picCartaActual.Size = new System.Drawing.Size(232, 351);
+            this.picCartaActual.Size = new System.Drawing.Size(261, 439);
             this.picCartaActual.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picCartaActual.TabIndex = 2;
             this.picCartaActual.TabStop = false;
@@ -84,10 +88,12 @@
             // 
             // panelTablero
             // 
-            this.panelTablero.Location = new System.Drawing.Point(12, 32);
+            this.panelTablero.Location = new System.Drawing.Point(12, 13);
+            this.panelTablero.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelTablero.Name = "panelTablero";
-            this.panelTablero.Size = new System.Drawing.Size(523, 459);
+            this.panelTablero.Size = new System.Drawing.Size(524, 536);
             this.panelTablero.TabIndex = 3;
+            this.panelTablero.Paint += new System.Windows.Forms.PaintEventHandler(this.panelTablero_Paint);
             // 
             // timerCartas
             // 
@@ -95,17 +101,19 @@
             // 
             // txtIP
             // 
-            this.txtIP.Location = new System.Drawing.Point(1342, 429);
+            this.txtIP.Location = new System.Drawing.Point(1510, 536);
+            this.txtIP.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtIP.Multiline = true;
             this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(243, 40);
+            this.txtIP.Size = new System.Drawing.Size(273, 49);
             this.txtIP.TabIndex = 4;
             // 
             // btnModoServidor
             // 
-            this.btnModoServidor.Location = new System.Drawing.Point(1351, 492);
+            this.btnModoServidor.Location = new System.Drawing.Point(1520, 615);
+            this.btnModoServidor.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnModoServidor.Name = "btnModoServidor";
-            this.btnModoServidor.Size = new System.Drawing.Size(193, 38);
+            this.btnModoServidor.Size = new System.Drawing.Size(217, 48);
             this.btnModoServidor.TabIndex = 5;
             this.btnModoServidor.Text = "Crear Partida (Servidor)";
             this.btnModoServidor.UseVisualStyleBackColor = true;
@@ -113,9 +121,10 @@
             // 
             // btnModoCliente
             // 
-            this.btnModoCliente.Location = new System.Drawing.Point(1351, 536);
+            this.btnModoCliente.Location = new System.Drawing.Point(1520, 670);
+            this.btnModoCliente.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnModoCliente.Name = "btnModoCliente";
-            this.btnModoCliente.Size = new System.Drawing.Size(193, 43);
+            this.btnModoCliente.Size = new System.Drawing.Size(217, 54);
             this.btnModoCliente.TabIndex = 6;
             this.btnModoCliente.Text = "Unirse a Partida (Cliente)";
             this.btnModoCliente.UseVisualStyleBackColor = true;
@@ -124,9 +133,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1348, 400);
+            this.label1.Location = new System.Drawing.Point(1516, 500);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 16);
+            this.label1.Size = new System.Drawing.Size(99, 20);
             this.label1.TabIndex = 7;
             this.label1.Text = "Escribe tu IP";
             // 
@@ -138,23 +147,26 @@
             "Tabla Llena",
             "En L (Fila 0, Columna 0 y sus bordes)",
             "Cuatro Esquinas"});
-            this.cmbModoJuego.Location = new System.Drawing.Point(1108, 145);
+            this.cmbModoJuego.Location = new System.Drawing.Point(1246, 181);
+            this.cmbModoJuego.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbModoJuego.Name = "cmbModoJuego";
-            this.cmbModoJuego.Size = new System.Drawing.Size(121, 24);
+            this.cmbModoJuego.Size = new System.Drawing.Size(136, 28);
             this.cmbModoJuego.TabIndex = 8;
             // 
             // panelTablero2
             // 
-            this.panelTablero2.Location = new System.Drawing.Point(541, 32);
+            this.panelTablero2.Location = new System.Drawing.Point(600, 13);
+            this.panelTablero2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelTablero2.Name = "panelTablero2";
-            this.panelTablero2.Size = new System.Drawing.Size(523, 459);
+            this.panelTablero2.Size = new System.Drawing.Size(521, 536);
             this.panelTablero2.TabIndex = 4;
             // 
             // btnGuardarFavorito
             // 
-            this.btnGuardarFavorito.Location = new System.Drawing.Point(12, 531);
+            this.btnGuardarFavorito.Location = new System.Drawing.Point(14, 664);
+            this.btnGuardarFavorito.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnGuardarFavorito.Name = "btnGuardarFavorito";
-            this.btnGuardarFavorito.Size = new System.Drawing.Size(105, 66);
+            this.btnGuardarFavorito.Size = new System.Drawing.Size(118, 82);
             this.btnGuardarFavorito.TabIndex = 9;
             this.btnGuardarFavorito.Text = "Guardar Tabla en Favoritos";
             this.btnGuardarFavorito.UseVisualStyleBackColor = true;
@@ -162,9 +174,10 @@
             // 
             // btnCargarFavorito
             // 
-            this.btnCargarFavorito.Location = new System.Drawing.Point(123, 531);
+            this.btnCargarFavorito.Location = new System.Drawing.Point(138, 664);
+            this.btnCargarFavorito.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCargarFavorito.Name = "btnCargarFavorito";
-            this.btnCargarFavorito.Size = new System.Drawing.Size(136, 66);
+            this.btnCargarFavorito.Size = new System.Drawing.Size(153, 82);
             this.btnCargarFavorito.TabIndex = 10;
             this.btnCargarFavorito.Text = "Cargar Tabla Favorita";
             this.btnCargarFavorito.UseVisualStyleBackColor = true;
@@ -173,18 +186,20 @@
             // lstHistorial
             // 
             this.lstHistorial.FormattingEnabled = true;
-            this.lstHistorial.ItemHeight = 16;
-            this.lstHistorial.Location = new System.Drawing.Point(3, 3);
+            this.lstHistorial.ItemHeight = 20;
+            this.lstHistorial.Location = new System.Drawing.Point(3, 4);
+            this.lstHistorial.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstHistorial.Name = "lstHistorial";
-            this.lstHistorial.Size = new System.Drawing.Size(120, 84);
+            this.lstHistorial.Size = new System.Drawing.Size(134, 104);
             this.lstHistorial.TabIndex = 11;
             // 
             // rbUnaTabla
             // 
             this.rbUnaTabla.AutoSize = true;
-            this.rbUnaTabla.Location = new System.Drawing.Point(1400, 64);
+            this.rbUnaTabla.Location = new System.Drawing.Point(1575, 80);
+            this.rbUnaTabla.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbUnaTabla.Name = "rbUnaTabla";
-            this.rbUnaTabla.Size = new System.Drawing.Size(92, 20);
+            this.rbUnaTabla.Size = new System.Drawing.Size(107, 24);
             this.rbUnaTabla.TabIndex = 12;
             this.rbUnaTabla.TabStop = true;
             this.rbUnaTabla.Text = "Una Tabla";
@@ -193,9 +208,10 @@
             // rbDosTablas
             // 
             this.rbDosTablas.AutoSize = true;
-            this.rbDosTablas.Location = new System.Drawing.Point(1400, 107);
+            this.rbDosTablas.Location = new System.Drawing.Point(1575, 134);
+            this.rbDosTablas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbDosTablas.Name = "rbDosTablas";
-            this.rbDosTablas.Size = new System.Drawing.Size(99, 20);
+            this.rbDosTablas.Size = new System.Drawing.Size(114, 24);
             this.rbDosTablas.TabIndex = 13;
             this.rbDosTablas.TabStop = true;
             this.rbDosTablas.Text = "Dos Tablas";
@@ -205,33 +221,36 @@
             // 
             this.flpHistorialImagenes.AutoScroll = true;
             this.flpHistorialImagenes.Controls.Add(this.lstHistorial);
-            this.flpHistorialImagenes.Location = new System.Drawing.Point(1332, 145);
+            this.flpHistorialImagenes.Location = new System.Drawing.Point(1498, 181);
+            this.flpHistorialImagenes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flpHistorialImagenes.Name = "flpHistorialImagenes";
-            this.flpHistorialImagenes.Size = new System.Drawing.Size(270, 239);
+            this.flpHistorialImagenes.Size = new System.Drawing.Size(304, 299);
             this.flpHistorialImagenes.TabIndex = 14;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1105, 126);
+            this.label2.Location = new System.Drawing.Point(1243, 158);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 16);
+            this.label2.Size = new System.Drawing.Size(114, 20);
             this.label2.TabIndex = 15;
             this.label2.Text = "Modo de juego";
             // 
             // cmbTablasFavoritas
             // 
             this.cmbTablasFavoritas.FormattingEnabled = true;
-            this.cmbTablasFavoritas.Location = new System.Drawing.Point(288, 530);
+            this.cmbTablasFavoritas.Location = new System.Drawing.Point(324, 662);
+            this.cmbTablasFavoritas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTablasFavoritas.Name = "cmbTablasFavoritas";
-            this.cmbTablasFavoritas.Size = new System.Drawing.Size(121, 24);
+            this.cmbTablasFavoritas.Size = new System.Drawing.Size(136, 28);
             this.cmbTablasFavoritas.TabIndex = 16;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1755, 646);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.ClientSize = new System.Drawing.Size(1974, 808);
             this.Controls.Add(this.cmbTablasFavoritas);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.flpHistorialImagenes);
@@ -249,6 +268,7 @@
             this.Controls.Add(this.picCartaActual);
             this.Controls.Add(this.btnSiguiente);
             this.Controls.Add(this.btnIniciar);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);

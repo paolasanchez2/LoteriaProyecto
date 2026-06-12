@@ -14,8 +14,8 @@ namespace LoteriaProyecto
 
         public Tablero()
         {
-            matrizCartas = new Carta[4, 4];
-            matrizMarcados = new bool[4, 4];
+            matrizCartas = new Carta[5,5];
+            matrizMarcados = new bool[5, 5];
         }
 
         // Llena el tablero de 4x4 con cartas aleatorias que no se repitan en la misma tabla
@@ -27,9 +27,9 @@ namespace LoteriaProyecto
             // Creamos una lista de control para asegurar que los IDs en ESTA tabla sean únicos
             List<int> idsUtilizados = new List<int>();
 
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     // Si por alguna razón nos quedamos sin cartas en la carpeta, rompemos el ciclo
                     if (copiaCartas.Count == 0) break;
@@ -78,25 +78,25 @@ namespace LoteriaProyecto
         public bool VerificarLineasTradicionales()
         {
             // 1. Validar Filas
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                if (matrizMarcados[f, 0] && matrizMarcados[f, 1] && matrizMarcados[f, 2] && matrizMarcados[f, 3])
+                if (matrizMarcados[f, 0] && matrizMarcados[f, 1] && matrizMarcados[f, 2] && matrizMarcados[f, 3] && matrizMarcados[f,4])
                     return true;
             }
 
             // 2. Validar Columnas
-            for (int c = 0; c < 4; c++)
+            for (int c = 0; c < 5; c++)
             {
-                if (matrizMarcados[0, c] && matrizMarcados[1, c] && matrizMarcados[2, c] && matrizMarcados[3, c])
+                if (matrizMarcados[0, c] && matrizMarcados[1, c] && matrizMarcados[2, c] && matrizMarcados[3, c] && matrizMarcados[4,c])
                     return true;
             }
 
             // 3. Diagonal de izquierda a derecha
-            if (matrizMarcados[0, 0] && matrizMarcados[1, 1] && matrizMarcados[2, 2] && matrizMarcados[3, 3])
+            if (matrizMarcados[0, 0] && matrizMarcados[1, 1] && matrizMarcados[2, 2] && matrizMarcados[3, 3] && matrizMarcados[4,4])
                 return true;
 
             // 4. Diagonal de derecha a izquierda
-            if (matrizMarcados[0, 3] && matrizMarcados[1, 2] && matrizMarcados[2, 1] && matrizMarcados[3, 0])
+            if (matrizMarcados[0, 4] && matrizMarcados[1, 3] && matrizMarcados[2, 2] && matrizMarcados[3, 1] && matrizMarcados[4,0])
                 return true;
 
             return false;
@@ -107,19 +107,19 @@ namespace LoteriaProyecto
             {
                 case "Tabla Llena":
                     // Recorre toda la matriz; si encuentra un false, no ha ganado
-                    for (int f = 0; f < 4; f++)
-                        for (int c = 0; c < 4; c++)
+                    for (int f = 0; f < 5; f++)
+                        for (int c = 0; c < 5; c++)
                             if (!matrizMarcados[f, c]) return false;
                     return true;
 
                 case "Cuatro Esquinas":
-                    return matrizMarcados[0, 0] && matrizMarcados[0, 3] &&
-                           matrizMarcados[3, 0] && matrizMarcados[3, 3];
+                    return matrizMarcados[0, 0] && matrizMarcados[0, 4] &&
+                           matrizMarcados[4, 0] && matrizMarcados[4, 4];
 
                 case "En L":
                     // Ejemplo básico de L (columna 0 completa + fila 3 completa)
                     return (matrizMarcados[0, 0] && matrizMarcados[1, 0] && matrizMarcados[2, 0] && matrizMarcados[3, 0] &&
-                            matrizMarcados[3, 1] && matrizMarcados[3, 2] && matrizMarcados[3, 3]);
+                            matrizMarcados[4, 0] && matrizMarcados[4, 1] && matrizMarcados[4, 2] && matrizMarcados[4,3] && matrizMarcados[4,4]);
 
                 default: // Tradicional (El algoritmo que ya tienes de filas, columnas y diagonales)
                          // Aquí pegas tu lógica actual de escaneo por líneas de 4

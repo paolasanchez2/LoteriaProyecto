@@ -73,9 +73,9 @@ namespace LoteriaProyecto
         public void SincronizarCartaPorId(int id)
         {
             // 1. Buscar en el primer tablero
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     Carta car = TableroJugador.ObtenerCarta(f, c);
                     if (car != null && car.Id == id)
@@ -90,9 +90,9 @@ namespace LoteriaProyecto
             // 2. Si no la halló, buscar en el segundo tablero
             if (TableroJugador2 != null)
             {
-                for (int f = 0; f < 4; f++)
+                for (int f = 0; f < 5; f++)
                 {
-                    for (int c = 0; c < 4; c++)
+                    for (int c = 0; c < 5; c++)
                     {
                         Carta car = TableroJugador2.ObtenerCarta(f, c);
                         if (car != null && car.Id == id)
