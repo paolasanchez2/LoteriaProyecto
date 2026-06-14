@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace LoteriaProyecto
 {
@@ -327,8 +328,9 @@ namespace LoteriaProyecto
                 string modoSeleccionado = cmbModoJuego.Text;
                 string numTablas = jugarConDosTablas ? "2" : "1";
 
-                // Mandamos el mensaje con el formato: INICIAR_PARTIDA:ModoJuego:NumTablas
-                red.EnviarMensaje($"INICIAR_PARTIDA:{modoSeleccionado}:{numTablas}");
+                int velocidad = (int)numVelocidad.Value;
+
+                red.EnviarMensaje($"INICIAR_PARTIDA|{modoSeleccionado}|{numTablas}|{velocidad}");
             }
         }
 
@@ -404,9 +406,18 @@ namespace LoteriaProyecto
         {
             soyServidor = true;
             red.IniciarServidor();
+
             btnModoServidor.Enabled = false;
+            btnModoCliente.Enabled = false;
+
             btnIniciar.Enabled = true; // El servidor controla el mazo
-            btnSiguiente.Enabled = false;
+            btnSiguiente.Enabled = true;
+
+            rbUnaTabla.Enabled = true;
+            rbDosTablas.Enabled = true;
+            cmbModoJuego.Enabled = true;
+            numVelocidad.Enabled = true;
+
             this.Text = "Lotería - MODO SERVIDOR";
         }
 
@@ -414,8 +425,17 @@ namespace LoteriaProyecto
         {
             soyServidor = false;
             red.ConectarAlServidor(txtIP.Text);
-            btnIniciar.Enabled = false; // El cliente no puede iniciar ni barajar
+
+            gbConfiguracion.Enabled = false;
+
+            btnIniciar.Enabled = false;
             btnSiguiente.Enabled = false;
+            btnAutomatico.Enabled = false;
+            btnDetenerAutomatico.Enabled = false;
+
+            btnModoServidor.Enabled = false;
+            btnModoCliente.Enabled = false;
+
             this.Text = "Lotería - MODO CLIENTE";
         }
 
@@ -457,24 +477,31 @@ namespace LoteriaProyecto
                     btnSiguiente.Enabled = false;
                     MessageBox.Show("¡El otro jugador ha cantado LOTERÍA! Suerte para la próxima.", "Fin del Juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                // Agrega este nuevo bloque IF junto a los otros casos de ProcesarMensajeRed
-                // Busca esto dentro de ProcesarMensajeRed:
-                // Modifica el bloque del inicio de partida dentro de ProcesarMensajeRed:
-                if (mensaje.StartsWith("INICIAR_PARTIDA:"))
+                
+                
+                
+                if (mensaje.StartsWith("INICIAR_PARTIDA|"))
                 {
-                    string[] datos = mensaje.Split(':');
+                    
+
+                    string[] datos = mensaje.Split('|');
+
                     string modoDelServidor = datos[1];
-                    string tablasDelServidor = datos[2]; // "1" o "2"
+                    string tablasDelServidor = datos[2];
+                    int velocidadDelServidor = int.Parse(datos[3]);
 
-                    // Sincronizamos los componentes del cliente automáticamente
                     cmbModoJuego.Text = modoDelServidor;
-                    if (tablasDelServidor == "2") rbDosTablas.Checked = true;
-                    else rbUnaTabla.Checked = true;
 
-                    // Controlamos la visibilidad del panel del cliente igual que en el servidor
+                    if (tablasDelServidor == "2")
+                        rbDosTablas.Checked = true;
+                    else
+                        rbUnaTabla.Checked = true;
+
                     panelTablero2.Visible = (tablasDelServidor == "2");
 
-                    // Inicializamos el tablero del cliente
+                    numVelocidad.Value = velocidadDelServidor;
+                    timerCartas.Interval = velocidadDelServidor * 1000;
+
                     IniciarTableroCliente();
                 }
             });

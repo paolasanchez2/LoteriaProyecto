@@ -52,9 +52,9 @@
             this.btnAutomatico = new System.Windows.Forms.Button();
             this.btnDetenerAutomatico = new System.Windows.Forms.Button();
             this.numVelocidad = new System.Windows.Forms.NumericUpDown();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbConfiguracion = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.gbControlesJuego = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -62,8 +62,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.gbConfiguracion.SuspendLayout();
+            this.gbControlesJuego.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -309,21 +309,21 @@
             0});
             this.numVelocidad.ValueChanged += new System.EventHandler(this.numVelocidad_ValueChanged);
             // 
-            // groupBox1
+            // gbConfiguracion
             // 
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.numVelocidad);
-            this.groupBox1.Controls.Add(this.cmbModoJuego);
-            this.groupBox1.Controls.Add(this.rbUnaTabla);
-            this.groupBox1.Controls.Add(this.rbDosTablas);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(1605, 13);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(283, 215);
-            this.groupBox1.TabIndex = 20;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Configuración";
+            this.gbConfiguracion.Controls.Add(this.label3);
+            this.gbConfiguracion.Controls.Add(this.label2);
+            this.gbConfiguracion.Controls.Add(this.numVelocidad);
+            this.gbConfiguracion.Controls.Add(this.cmbModoJuego);
+            this.gbConfiguracion.Controls.Add(this.rbUnaTabla);
+            this.gbConfiguracion.Controls.Add(this.rbDosTablas);
+            this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbConfiguracion.Location = new System.Drawing.Point(1605, 13);
+            this.gbConfiguracion.Name = "gbConfiguracion";
+            this.gbConfiguracion.Size = new System.Drawing.Size(283, 215);
+            this.gbConfiguracion.TabIndex = 20;
+            this.gbConfiguracion.TabStop = false;
+            this.gbConfiguracion.Text = "Configuración";
             // 
             // label3
             // 
@@ -335,19 +335,19 @@
             this.label3.Text = "Velocidad por carta";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // groupBox2
+            // gbControlesJuego
             // 
-            this.groupBox2.Controls.Add(this.btnIniciar);
-            this.groupBox2.Controls.Add(this.btnSiguiente);
-            this.groupBox2.Controls.Add(this.btnDetenerAutomatico);
-            this.groupBox2.Controls.Add(this.btnAutomatico);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(1606, 264);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(282, 220);
-            this.groupBox2.TabIndex = 21;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Controles de juego";
+            this.gbControlesJuego.Controls.Add(this.btnIniciar);
+            this.gbControlesJuego.Controls.Add(this.btnSiguiente);
+            this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
+            this.gbControlesJuego.Controls.Add(this.btnAutomatico);
+            this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbControlesJuego.Location = new System.Drawing.Point(1606, 264);
+            this.gbControlesJuego.Name = "gbControlesJuego";
+            this.gbControlesJuego.Size = new System.Drawing.Size(282, 220);
+            this.gbControlesJuego.TabIndex = 21;
+            this.gbControlesJuego.TabStop = false;
+            this.gbControlesJuego.Text = "Controles de juego";
             // 
             // groupBox3
             // 
@@ -411,8 +411,8 @@
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gbControlesJuego);
+            this.Controls.Add(this.gbConfiguracion);
             this.Controls.Add(this.panelTablero2);
             this.Controls.Add(this.panelTablero);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -422,9 +422,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).EndInit();
             this.flpHistorialImagenes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.gbConfiguracion.ResumeLayout(false);
+            this.gbConfiguracion.PerformLayout();
+            this.gbControlesJuego.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -457,9 +457,9 @@
         private System.Windows.Forms.Button btnAutomatico;
         private System.Windows.Forms.Button btnDetenerAutomatico;
         private System.Windows.Forms.NumericUpDown numVelocidad;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbConfiguracion;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox gbControlesJuego;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox5;
