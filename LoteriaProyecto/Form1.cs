@@ -54,6 +54,7 @@ namespace LoteriaProyecto
         {
             lstHistorial.Visible = false;
             ActualizarListaFavoritos();
+           
         }
 
         // Genera los 16 PictureBoxes de forma dinámica en la interfaz
@@ -752,6 +753,26 @@ namespace LoteriaProyecto
         private void numVelocidad_ValueChanged(object sender, EventArgs e)
         {
             timerCartas.Interval = (int)numVelocidad.Value * 1000;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbCartasPersonalizar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
+
+        private void btnPersonalizarTabla_Click(object sender, EventArgs e)
+        {
+            FormPersonalizacion ventana = new FormPersonalizacion();
+            ventana.ShowDialog();
+
+            ActualizarListaFavoritos();
         }
     }
 }
