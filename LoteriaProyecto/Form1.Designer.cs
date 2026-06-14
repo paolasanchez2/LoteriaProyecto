@@ -49,8 +49,12 @@
             this.flpHistorialImagenes = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbTablasFavoritas = new System.Windows.Forms.ComboBox();
+            this.btnAutomatico = new System.Windows.Forms.Button();
+            this.btnDetenerAutomatico = new System.Windows.Forms.Button();
+            this.numVelocidad = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
             this.SuspendLayout();
             // 
             // btnIniciar
@@ -58,7 +62,7 @@
             this.btnIniciar.Location = new System.Drawing.Point(1231, 52);
             this.btnIniciar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnIniciar.Name = "btnIniciar";
-            this.btnIniciar.Size = new System.Drawing.Size(141, 34);
+            this.btnIniciar.Size = new System.Drawing.Size(224, 34);
             this.btnIniciar.TabIndex = 0;
             this.btnIniciar.Text = "Iniciar Juego";
             this.btnIniciar.UseVisualStyleBackColor = true;
@@ -69,7 +73,7 @@
             this.btnSiguiente.Location = new System.Drawing.Point(1231, 94);
             this.btnSiguiente.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSiguiente.Name = "btnSiguiente";
-            this.btnSiguiente.Size = new System.Drawing.Size(141, 35);
+            this.btnSiguiente.Size = new System.Drawing.Size(224, 35);
             this.btnSiguiente.TabIndex = 1;
             this.btnSiguiente.Text = "Siguiente Carta";
             this.btnSiguiente.UseVisualStyleBackColor = true;
@@ -77,10 +81,10 @@
             // 
             // picCartaActual
             // 
-            this.picCartaActual.Location = new System.Drawing.Point(1231, 254);
+            this.picCartaActual.Location = new System.Drawing.Point(1231, 341);
             this.picCartaActual.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.picCartaActual.Name = "picCartaActual";
-            this.picCartaActual.Size = new System.Drawing.Size(261, 439);
+            this.picCartaActual.Size = new System.Drawing.Size(261, 418);
             this.picCartaActual.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picCartaActual.TabIndex = 2;
             this.picCartaActual.TabStop = false;
@@ -147,7 +151,7 @@
             "Tabla Llena",
             "En L (Fila 0, Columna 0 y sus bordes)",
             "Cuatro Esquinas"});
-            this.cmbModoJuego.Location = new System.Drawing.Point(1246, 181);
+            this.cmbModoJuego.Location = new System.Drawing.Point(1231, 295);
             this.cmbModoJuego.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbModoJuego.Name = "cmbModoJuego";
             this.cmbModoJuego.Size = new System.Drawing.Size(136, 28);
@@ -230,7 +234,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1243, 158);
+            this.label2.Location = new System.Drawing.Point(1227, 269);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(114, 20);
             this.label2.TabIndex = 15;
@@ -245,12 +249,58 @@
             this.cmbTablasFavoritas.Size = new System.Drawing.Size(136, 28);
             this.cmbTablasFavoritas.TabIndex = 16;
             // 
+            // btnAutomatico
+            // 
+            this.btnAutomatico.Location = new System.Drawing.Point(1231, 134);
+            this.btnAutomatico.Name = "btnAutomatico";
+            this.btnAutomatico.Size = new System.Drawing.Size(224, 37);
+            this.btnAutomatico.TabIndex = 17;
+            this.btnAutomatico.Text = "Iniciar automático";
+            this.btnAutomatico.UseVisualStyleBackColor = true;
+            this.btnAutomatico.Click += new System.EventHandler(this.btnAutomatico_Click);
+            // 
+            // btnDetenerAutomatico
+            // 
+            this.btnDetenerAutomatico.Location = new System.Drawing.Point(1231, 177);
+            this.btnDetenerAutomatico.Name = "btnDetenerAutomatico";
+            this.btnDetenerAutomatico.Size = new System.Drawing.Size(224, 38);
+            this.btnDetenerAutomatico.TabIndex = 18;
+            this.btnDetenerAutomatico.Text = "Detener automático";
+            this.btnDetenerAutomatico.UseVisualStyleBackColor = true;
+            this.btnDetenerAutomatico.Click += new System.EventHandler(this.btnDetenerAutomatico_Click);
+            // 
+            // numVelocidad
+            // 
+            this.numVelocidad.Location = new System.Drawing.Point(1231, 221);
+            this.numVelocidad.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numVelocidad.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numVelocidad.Name = "numVelocidad";
+            this.numVelocidad.Size = new System.Drawing.Size(85, 26);
+            this.numVelocidad.TabIndex = 19;
+            this.numVelocidad.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.numVelocidad.ValueChanged += new System.EventHandler(this.numVelocidad_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1974, 808);
+            this.Controls.Add(this.numVelocidad);
+            this.Controls.Add(this.btnDetenerAutomatico);
+            this.Controls.Add(this.btnAutomatico);
             this.Controls.Add(this.cmbTablasFavoritas);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.flpHistorialImagenes);
@@ -274,6 +324,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).EndInit();
             this.flpHistorialImagenes.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,6 +351,9 @@
         private System.Windows.Forms.FlowLayoutPanel flpHistorialImagenes;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbTablasFavoritas;
+        private System.Windows.Forms.Button btnAutomatico;
+        private System.Windows.Forms.Button btnDetenerAutomatico;
+        private System.Windows.Forms.NumericUpDown numVelocidad;
     }
 }
 

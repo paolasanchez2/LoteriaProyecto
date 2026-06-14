@@ -33,6 +33,8 @@ namespace LoteriaProyecto
             CrearTableroEnPantalla2S();
             red = new RedManager();
             red.MensajeRecibido += ProcesarMensajeRed;
+
+            timerCartas.Tick += timerCartas_Tick; //Nuevo
         }
         private bool ValidarSeleccionDeTablas()
         {
@@ -369,6 +371,11 @@ namespace LoteriaProyecto
 
                 MessageBox.Show("El mazo se ha vaciado. ¡Fin del juego!", "Juego Terminado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void timerCartas_Tick(object sender, EventArgs e)
+        {
+            AvanzarJuego();
         }
 
         private void picCartaActual_Click(object sender, EventArgs e)
@@ -722,6 +729,29 @@ namespace LoteriaProyecto
         private void panelTablero_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnAutomatico_Click(object sender, EventArgs e)
+        {
+            if (!juego.EnCurso)
+            {
+                MessageBox.Show("Primero inicia una partida.");
+                return;
+            }
+
+
+            timerCartas.Interval = (int)numVelocidad.Value * 1000;
+            timerCartas.Start();
+        }
+
+        private void btnDetenerAutomatico_Click(object sender, EventArgs e)
+        {
+            timerCartas.Stop();
+        }
+
+        private void numVelocidad_ValueChanged(object sender, EventArgs e)
+        {
+            timerCartas.Interval = (int)numVelocidad.Value * 1000;
         }
     }
 }
