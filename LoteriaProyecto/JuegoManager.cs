@@ -14,6 +14,8 @@ namespace LoteriaProyecto
         public bool EnCurso { get; private set; }
         public Tablero TableroJugador2 { get; private set; }
 
+        public List<Tablero> TablerosJugador { get; private set; }
+
         private int indicePersonalizar = 0;
         // Creamos una instancia del manejador de sonidos adentro del juego
         public SonidoManager ControlSonido { get; private set; }
@@ -26,6 +28,8 @@ namespace LoteriaProyecto
             ControlSonido = new SonidoManager(); // Se inicializa aquí
             EnCurso = false;
             rndGlobal = new Random(); // Inicializamos el Random global
+
+            TablerosJugador = new List<Tablero>();
         }
 
         public void IniciarNuevoJuego()
@@ -124,6 +128,30 @@ namespace LoteriaProyecto
             indicePersonalizar = (indicePersonalizar + 1) % todas.Count;
 
             return seleccionada;
+        }
+
+        public void IniciarNuevoJuego(int cantidadTablas)
+        {
+            MazoPrincipal.Barajar();
+
+            TablerosJugador = new List<Tablero>();
+
+            for (int i = 0; i < cantidadTablas; i++)
+            {
+                Tablero nuevoTablero = new Tablero();
+                nuevoTablero.GenerarTableroAleatorio(MazoPrincipal, rndGlobal);
+                TablerosJugador.Add(nuevoTablero);
+            }
+
+            // Compatibilidad con código viejo
+            if (TablerosJugador.Count > 0)
+                TableroJugador = TablerosJugador[0];
+
+            if (TablerosJugador.Count > 1)
+                TableroJugador2 = TablerosJugador[1];
+
+            EnCurso = true;
+            CartaActual = null;
         }
     }
 }

@@ -294,7 +294,7 @@
             this.gbConfiguracion.Controls.Add(this.numVelocidad);
             this.gbConfiguracion.Controls.Add(this.cmbModoJuego);
             this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbConfiguracion.Location = new System.Drawing.Point(2129, 41);
+            this.gbConfiguracion.Location = new System.Drawing.Point(1744, 13);
             this.gbConfiguracion.Name = "gbConfiguracion";
             this.gbConfiguracion.Size = new System.Drawing.Size(283, 215);
             this.gbConfiguracion.TabIndex = 20;
@@ -346,7 +346,7 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(2130, 281);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1744, 272);
             this.gbControlesJuego.Name = "gbControlesJuego";
             this.gbControlesJuego.Size = new System.Drawing.Size(282, 220);
             this.gbControlesJuego.TabIndex = 21;
@@ -361,7 +361,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(2130, 537);
+            this.groupBox3.Location = new System.Drawing.Point(1744, 516);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -375,7 +375,7 @@
             this.groupBox4.Controls.Add(this.flpHistorialImagenes);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(1513, 50);
+            this.groupBox4.Location = new System.Drawing.Point(1340, 13);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(360, 783);
             this.groupBox4.TabIndex = 23;
@@ -389,7 +389,7 @@
             this.groupBox5.Controls.Add(this.btnCargarFavorito);
             this.groupBox5.Controls.Add(this.cmbTablasFavoritas);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(34, 787);
+            this.groupBox5.Location = new System.Drawing.Point(12, 705);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(524, 218);
             this.groupBox5.TabIndex = 26;
@@ -419,7 +419,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(2939, 1386);
+            this.ClientSize = new System.Drawing.Size(2036, 1024);
             this.Controls.Add(this.flpTableros);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);

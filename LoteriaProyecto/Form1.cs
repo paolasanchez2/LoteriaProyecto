@@ -276,9 +276,9 @@ namespace LoteriaProyecto
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            juego.IniciarNuevoJuego();
-
             int cantidadTablas = (int)numCantidadTablas.Value;
+
+            juego.IniciarNuevoJuego(cantidadTablas);
 
             CrearTablerosDinamicos(cantidadTablas);
 
@@ -516,17 +516,19 @@ namespace LoteriaProyecto
         private void IniciarTableroCliente()
         {
             lstHistorial.Items.Clear();
-            // El cliente inicializa su lógica local
-            juego.IniciarNuevoJuego();
 
-            // Pintamos las imágenes en la pantalla del cliente
+            int cantidadTablas = (int)numCantidadTablas.Value;
+            juego.IniciarNuevoJuego(cantidadTablas);
+            CrearTablerosDinamicos(cantidadTablas);
+
+
             for (int f = 0; f < 5; f++)
             {
                 for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                     casillasVisuales[f, c].BackColor = Color.White;
-                    casillasVisuales[f, c].AccessibleName = ""; // Limpia marcas anteriores
+                    casillasVisuales[f, c].AccessibleName = ""; 
 
                     try
                     {
@@ -848,7 +850,7 @@ namespace LoteriaProyecto
                         pic.BackColor = Color.White;
                         pic.Cursor = Cursors.Hand;
 
-                        Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
+                        Carta carta = juego.TablerosJugador[t].ObtenerCarta(f, c);
 
                         if (System.IO.File.Exists(carta.RutaImagen))
                         {
