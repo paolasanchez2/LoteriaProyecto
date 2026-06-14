@@ -14,10 +14,10 @@ namespace LoteriaProyecto
     public partial class Form1 : Form
     {
 
-        // Instancia global del controlador del juego
+        private List<PictureBox[,]> listaCasillasVisuales;
         private JuegoManager juego;
 
-        // Arreglo bidimensional de PictureBoxes para la interfaz visual (Tema 5)
+        
         private PictureBox[,] casillasVisuales;
         private PictureBox[,] casillasVisuales2;
 
@@ -30,32 +30,35 @@ namespace LoteriaProyecto
             juego = new JuegoManager();
             casillasVisuales = new PictureBox[5, 5];
             casillasVisuales2 = new PictureBox[5, 5];
+            listaCasillasVisuales = new List<PictureBox[,]>();
             CrearTableroEnPantalla();
             CrearTableroEnPantalla2S();
             red = new RedManager();
             red.MensajeRecibido += ProcesarMensajeRed;
 
             timerCartas.Tick += timerCartas_Tick; //Nuevo
+            
         }
         private bool ValidarSeleccionDeTablas()
         {
-            // Si ninguno de los dos RadioButtons está marcado, alertamos al usuario
-            if (!rbUnaTabla.Checked && !rbDosTablas.Checked)
+            if (numCantidadTablas.Value < 1)
             {
-                MessageBox.Show("Por favor, selecciona primero con cuántas tablas deseas jugar (1 Tabla o 2 Tablas) antes de realizar esta acción.",
+                MessageBox.Show("Debes seleccionar al menos 1 tabla.",
                                 "Selección Requerida",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
-                return false; // Validación fallida
+                return false;
             }
-            return true; // Todo en orden
+
+            return true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             lstHistorial.Visible = false;
             ActualizarListaFavoritos();
-           
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         // Genera los 16 PictureBoxes de forma dinámica en la interfaz
@@ -202,7 +205,7 @@ namespace LoteriaProyecto
 
         private void PixCasillaTablero2_Click(object sender, EventArgs e)
         {
-            if (!rbDosTablas.Checked) return;
+            if (numCantidadTablas.Value < 2) return;
             PictureBox picPresionado = (PictureBox)sender;
             Point posicion = (Point)picPresionado.Tag;
             int fila = posicion.X;
@@ -273,33 +276,39 @@ namespace LoteriaProyecto
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSeleccionDeTablas()) return;
             juego.IniciarNuevoJuego();
 
-            // 1. Verificar cuántas tablas seleccionó el usuario
-            bool jugarConDosTablas = rbDosTablas.Checked; // O desde un ComboBox: cmbTablas.Text == "2"
+            int cantidadTablas = (int)numCantidadTablas.Value;
 
-            // Mostrar u ocultar el panel visual de la segunda tabla
+            CrearTablerosDinamicos(cantidadTablas);
+
+            bool jugarConDosTablas = cantidadTablas >= 2;
+
             panelTablero2.Visible = jugarConDosTablas;
 
-            // Generar y pintar la primera tabla (Siempre se hace)
+            // Pintar tabla 1
             for (int f = 0; f < 5; f++)
             {
                 for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
                     casillasVisuales[f, c].BackColor = Color.White;
+
                     try
                     {
                         if (System.IO.File.Exists(carta.RutaImagen))
                             casillasVisuales[f, c].Image = Image.FromFile(carta.RutaImagen);
+
                         casillasVisuales[f, c].AccessibleName = "";
                     }
-                    catch { casillasVisuales[f, c].Image = null; }
+                    catch
+                    {
+                        casillasVisuales[f, c].Image = null;
+                    }
                 }
             }
 
-            // Generar y pintar la segunda tabla SOLO si el usuario la seleccionó
+            // Pintar tabla 2 solo si cantidadTablas >= 2
             if (jugarConDosTablas)
             {
                 for (int f = 0; f < 5; f++)
@@ -308,29 +317,32 @@ namespace LoteriaProyecto
                     {
                         Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
                         casillasVisuales2[f, c].BackColor = Color.White;
+
                         try
                         {
                             if (System.IO.File.Exists(carta.RutaImagen))
                                 casillasVisuales2[f, c].Image = Image.FromFile(carta.RutaImagen);
+
                             casillasVisuales2[f, c].AccessibleName = "";
                         }
-                        catch { casillasVisuales2[f, c].Image = null; }
+                        catch
+                        {
+                            casillasVisuales2[f, c].Image = null;
+                        }
                     }
                 }
             }
 
             btnSiguiente.Enabled = true;
             picCartaActual.Image = null;
-            flpHistorialImagenes.Controls.Clear(); // Limpiamos el historial visual (Punto 2)
+            flpHistorialImagenes.Controls.Clear();
 
             if (soyServidor)
             {
                 string modoSeleccionado = cmbModoJuego.Text;
-                string numTablas = jugarConDosTablas ? "2" : "1";
-
                 int velocidad = (int)numVelocidad.Value;
 
-                red.EnviarMensaje($"INICIAR_PARTIDA|{modoSeleccionado}|{numTablas}|{velocidad}");
+                red.EnviarMensaje($"INICIAR_PARTIDA|{modoSeleccionado}|{cantidadTablas}|{velocidad}");
             }
         }
 
@@ -413,8 +425,7 @@ namespace LoteriaProyecto
             btnIniciar.Enabled = true; // El servidor controla el mazo
             btnSiguiente.Enabled = true;
 
-            rbUnaTabla.Enabled = true;
-            rbDosTablas.Enabled = true;
+            numCantidadTablas.Enabled = true;
             cmbModoJuego.Enabled = true;
             numVelocidad.Enabled = true;
 
@@ -441,20 +452,19 @@ namespace LoteriaProyecto
 
         private void ProcesarMensajeRed(string mensaje)
         {
-            // C# requiere usar Invoke porque la red corre en un hilo separado a la interfaz gráfica
+            
             this.Invoke((MethodInvoker)delegate
             {
-                // CASO 1: Llegó una nueva carta desde el servidor
+               
                 if (mensaje.StartsWith("CARTA:"))
                 {
                     int idCarta = int.Parse(mensaje.Split(':')[1]);
 
-                    // Le ordenamos al juego local del cliente que se sincronice con el ID enviado
+                    
                     juego.SincronizarCartaPorId(idCarta);
-                    AgregarAlHistorialVisual(juego.CartaActual); // <--- REEMPLAZA O AGREGA AQUÍ
+                    AgregarAlHistorialVisual(juego.CartaActual); 
                     lstHistorial.Items.Insert(0, $"{idCarta} - {juego.CartaActual.Nombre}");
-
-                    // Buscamos visualmente el archivo en la carpeta local para mostrarlo en la pantalla del cliente
+           
                     try
                     {
                         string rutaCarpeta = "imagenes";
@@ -469,7 +479,7 @@ namespace LoteriaProyecto
                     }
                     catch (Exception) { /* Ignorar si hay problemas de carga visual */ }
                 }
-                // CASO 2: El contrincante cantó ¡Lotería! antes que tú
+                
                 if (mensaje == "LOTERIA")
                 {
                     juego.TerminarJuego();
@@ -482,22 +492,19 @@ namespace LoteriaProyecto
                 
                 if (mensaje.StartsWith("INICIAR_PARTIDA|"))
                 {
-                    
-
                     string[] datos = mensaje.Split('|');
 
                     string modoDelServidor = datos[1];
                     string tablasDelServidor = datos[2];
                     int velocidadDelServidor = int.Parse(datos[3]);
 
+                    int cantidadTablasServidor = int.Parse(tablasDelServidor);
+
                     cmbModoJuego.Text = modoDelServidor;
 
-                    if (tablasDelServidor == "2")
-                        rbDosTablas.Checked = true;
-                    else
-                        rbUnaTabla.Checked = true;
+                    numCantidadTablas.Value = cantidadTablasServidor;
 
-                    panelTablero2.Visible = (tablasDelServidor == "2");
+                    panelTablero2.Visible = (cantidadTablasServidor >= 2);
 
                     numVelocidad.Value = velocidadDelServidor;
                     timerCartas.Interval = velocidadDelServidor * 1000;
@@ -634,7 +641,7 @@ namespace LoteriaProyecto
         }
         private void btnCargarFavorito_Click(object sender, EventArgs e)
         {
-            // 1. Validar que haya seleccionado una opción (1 o 2 tablas)
+            
             if (!ValidarSeleccionDeTablas()) return;
 
             if (cmbTablasFavoritas.SelectedItem == null)
@@ -650,8 +657,8 @@ namespace LoteriaProyecto
 
             try
             {
-                // Guardamos en una variable booleana si el usuario quiere cargar la segunda tabla
-                bool cargarSegundaTabla = rbDosTablas.Checked;
+
+                bool cargarSegundaTabla = numCantidadTablas.Value >= 2;
 
                 string[] lineas = System.IO.File.ReadAllLines(rutaArchivo);
                 foreach (string linea in lineas)
@@ -670,7 +677,7 @@ namespace LoteriaProyecto
                     {
                         juego.TableroJugador.AsignarCartaEnPosicion(f, c, cartaFavorita);
                     }
-                    else if (tipoTablero == "T2" && cargarSegundaTabla) // <-- SOLO si rbDosTablas está activo
+                    else if (tipoTablero == "T2" && cargarSegundaTabla) 
                     {
                         juego.TableroJugador2.AsignarCartaEnPosicion(f, c, cartaFavorita);
                     }
@@ -800,6 +807,64 @@ namespace LoteriaProyecto
             ventana.ShowDialog();
 
             ActualizarListaFavoritos();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CrearTablerosDinamicos(int cantidadTablas)
+        {
+            MessageBox.Show("Creando " + cantidadTablas + " tablas");
+
+            flpTableros.Controls.Clear();
+            listaCasillasVisuales.Clear();
+
+            int tamañoCasilla = 65;
+            int espacio = 5;
+
+            for (int t = 0; t < cantidadTablas; t++)
+            {
+                var grupoTabla = new System.Windows.Forms.GroupBox();
+                grupoTabla.Text = "Tabla " + (t + 1);
+                grupoTabla.Width = 380;
+                grupoTabla.Height = 410;
+
+                PictureBox[,] casillas = new PictureBox[5, 5];
+
+                for (int f = 0; f < 5; f++)
+                {
+                    for (int c = 0; c < 5; c++)
+                    {
+                        PictureBox pic = new PictureBox();
+
+                        pic.Width = tamañoCasilla;
+                        pic.Height = tamañoCasilla;
+                        pic.Left = 15 + c * (tamañoCasilla + espacio);
+                        pic.Top = 25 + f * (tamañoCasilla + espacio);
+                        pic.SizeMode = PictureBoxSizeMode.StretchImage;
+                        pic.BorderStyle = BorderStyle.FixedSingle;
+                        pic.BackColor = Color.White;
+                        pic.Cursor = Cursors.Hand;
+
+                        Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
+
+                        if (System.IO.File.Exists(carta.RutaImagen))
+                        {
+                            pic.Image = Image.FromFile(carta.RutaImagen);
+                        }
+
+                        pic.Tag = new Point(f, c);
+
+                        grupoTabla.Controls.Add(pic);
+                        casillas[f, c] = pic;
+                    }
+                }
+
+                listaCasillasVisuales.Add(casillas);
+                flpTableros.Controls.Add(grupoTabla);
+            }
         }
     }
 }

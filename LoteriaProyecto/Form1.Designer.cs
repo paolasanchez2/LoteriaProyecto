@@ -44,8 +44,6 @@
             this.btnGuardarFavorito = new System.Windows.Forms.Button();
             this.btnCargarFavorito = new System.Windows.Forms.Button();
             this.lstHistorial = new System.Windows.Forms.ListBox();
-            this.rbUnaTabla = new System.Windows.Forms.RadioButton();
-            this.rbDosTablas = new System.Windows.Forms.RadioButton();
             this.flpHistorialImagenes = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbTablasFavoritas = new System.Windows.Forms.ComboBox();
@@ -53,16 +51,20 @@
             this.btnDetenerAutomatico = new System.Windows.Forms.Button();
             this.numVelocidad = new System.Windows.Forms.NumericUpDown();
             this.gbConfiguracion = new System.Windows.Forms.GroupBox();
+            this.numCantidadTablas = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.gbControlesJuego = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnPersonalizarTabla = new System.Windows.Forms.Button();
+            this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
             this.gbConfiguracion.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCantidadTablas)).BeginInit();
             this.gbControlesJuego.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -109,6 +111,7 @@
             this.panelTablero.Name = "panelTablero";
             this.panelTablero.Size = new System.Drawing.Size(524, 536);
             this.panelTablero.TabIndex = 3;
+            this.panelTablero.Visible = false;
             this.panelTablero.Paint += new System.Windows.Forms.PaintEventHandler(this.panelTablero_Paint);
             // 
             // timerCartas
@@ -164,7 +167,7 @@
             "Tabla Llena",
             "En L (Fila 0, Columna 0 y sus bordes)",
             "Cuatro Esquinas"});
-            this.cmbModoJuego.Location = new System.Drawing.Point(6, 57);
+            this.cmbModoJuego.Location = new System.Drawing.Point(6, 50);
             this.cmbModoJuego.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbModoJuego.Name = "cmbModoJuego";
             this.cmbModoJuego.Size = new System.Drawing.Size(266, 30);
@@ -177,6 +180,7 @@
             this.panelTablero2.Name = "panelTablero2";
             this.panelTablero2.Size = new System.Drawing.Size(521, 536);
             this.panelTablero2.TabIndex = 4;
+            this.panelTablero2.Visible = false;
             // 
             // btnGuardarFavorito
             // 
@@ -210,34 +214,6 @@
             this.lstHistorial.Size = new System.Drawing.Size(134, 92);
             this.lstHistorial.TabIndex = 11;
             // 
-            // rbUnaTabla
-            // 
-            this.rbUnaTabla.AutoSize = true;
-            this.rbUnaTabla.BackColor = System.Drawing.SystemColors.Control;
-            this.rbUnaTabla.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbUnaTabla.ForeColor = System.Drawing.Color.Black;
-            this.rbUnaTabla.Location = new System.Drawing.Point(1, 104);
-            this.rbUnaTabla.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.rbUnaTabla.Name = "rbUnaTabla";
-            this.rbUnaTabla.Size = new System.Drawing.Size(119, 26);
-            this.rbUnaTabla.TabIndex = 12;
-            this.rbUnaTabla.TabStop = true;
-            this.rbUnaTabla.Text = "Una Tabla";
-            this.rbUnaTabla.UseVisualStyleBackColor = false;
-            // 
-            // rbDosTablas
-            // 
-            this.rbDosTablas.AutoSize = true;
-            this.rbDosTablas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbDosTablas.Location = new System.Drawing.Point(145, 104);
-            this.rbDosTablas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.rbDosTablas.Name = "rbDosTablas";
-            this.rbDosTablas.Size = new System.Drawing.Size(127, 26);
-            this.rbDosTablas.TabIndex = 13;
-            this.rbDosTablas.TabStop = true;
-            this.rbDosTablas.Text = "Dos Tablas";
-            this.rbDosTablas.UseVisualStyleBackColor = true;
-            // 
             // flpHistorialImagenes
             // 
             this.flpHistorialImagenes.AutoScroll = true;
@@ -251,7 +227,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 33);
+            this.label2.Location = new System.Drawing.Point(5, 24);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(128, 22);
             this.label2.TabIndex = 15;
@@ -288,7 +264,7 @@
             // 
             // numVelocidad
             // 
-            this.numVelocidad.Location = new System.Drawing.Point(6, 174);
+            this.numVelocidad.Location = new System.Drawing.Point(11, 176);
             this.numVelocidad.Maximum = new decimal(new int[] {
             10,
             0,
@@ -311,24 +287,52 @@
             // 
             // gbConfiguracion
             // 
+            this.gbConfiguracion.Controls.Add(this.numCantidadTablas);
+            this.gbConfiguracion.Controls.Add(this.label4);
             this.gbConfiguracion.Controls.Add(this.label3);
             this.gbConfiguracion.Controls.Add(this.label2);
             this.gbConfiguracion.Controls.Add(this.numVelocidad);
             this.gbConfiguracion.Controls.Add(this.cmbModoJuego);
-            this.gbConfiguracion.Controls.Add(this.rbUnaTabla);
-            this.gbConfiguracion.Controls.Add(this.rbDosTablas);
             this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbConfiguracion.Location = new System.Drawing.Point(1605, 13);
+            this.gbConfiguracion.Location = new System.Drawing.Point(2129, 41);
             this.gbConfiguracion.Name = "gbConfiguracion";
             this.gbConfiguracion.Size = new System.Drawing.Size(283, 215);
             this.gbConfiguracion.TabIndex = 20;
             this.gbConfiguracion.TabStop = false;
             this.gbConfiguracion.Text = "Configuración";
             // 
+            // numCantidadTablas
+            // 
+            this.numCantidadTablas.Location = new System.Drawing.Point(9, 109);
+            this.numCantidadTablas.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCantidadTablas.Name = "numCantidadTablas";
+            this.numCantidadTablas.Size = new System.Drawing.Size(120, 28);
+            this.numCantidadTablas.TabIndex = 27;
+            this.numCantidadTablas.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(5, 84);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 22);
+            this.label4.TabIndex = 28;
+            this.label4.Text = "Cantidad de tablas";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(2, 151);
+            this.label3.Location = new System.Drawing.Point(7, 151);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(165, 22);
             this.label3.TabIndex = 20;
@@ -342,7 +346,7 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1606, 264);
+            this.gbControlesJuego.Location = new System.Drawing.Point(2130, 281);
             this.gbControlesJuego.Name = "gbControlesJuego";
             this.gbControlesJuego.Size = new System.Drawing.Size(282, 220);
             this.gbControlesJuego.TabIndex = 21;
@@ -357,7 +361,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(1608, 514);
+            this.groupBox3.Location = new System.Drawing.Point(2130, 537);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -371,7 +375,7 @@
             this.groupBox4.Controls.Add(this.flpHistorialImagenes);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(1170, 13);
+            this.groupBox4.Location = new System.Drawing.Point(1513, 50);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(360, 783);
             this.groupBox4.TabIndex = 23;
@@ -385,7 +389,7 @@
             this.groupBox5.Controls.Add(this.btnCargarFavorito);
             this.groupBox5.Controls.Add(this.cmbTablasFavoritas);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(12, 578);
+            this.groupBox5.Location = new System.Drawing.Point(34, 787);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(524, 218);
             this.groupBox5.TabIndex = 26;
@@ -402,12 +406,21 @@
             this.btnPersonalizarTabla.UseVisualStyleBackColor = true;
             this.btnPersonalizarTabla.Click += new System.EventHandler(this.btnPersonalizarTabla_Click);
             // 
+            // flpTableros
+            // 
+            this.flpTableros.AutoScroll = true;
+            this.flpTableros.Location = new System.Drawing.Point(12, 12);
+            this.flpTableros.Name = "flpTableros";
+            this.flpTableros.Size = new System.Drawing.Size(1284, 654);
+            this.flpTableros.TabIndex = 27;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(1974, 808);
+            this.ClientSize = new System.Drawing.Size(2939, 1386);
+            this.Controls.Add(this.flpTableros);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -424,6 +437,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).EndInit();
             this.gbConfiguracion.ResumeLayout(false);
             this.gbConfiguracion.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCantidadTablas)).EndInit();
             this.gbControlesJuego.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -449,8 +463,6 @@
         private System.Windows.Forms.Button btnGuardarFavorito;
         private System.Windows.Forms.Button btnCargarFavorito;
         private System.Windows.Forms.ListBox lstHistorial;
-        private System.Windows.Forms.RadioButton rbUnaTabla;
-        private System.Windows.Forms.RadioButton rbDosTablas;
         private System.Windows.Forms.FlowLayoutPanel flpHistorialImagenes;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbTablasFavoritas;
@@ -464,6 +476,9 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnPersonalizarTabla;
+        private System.Windows.Forms.NumericUpDown numCantidadTablas;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.FlowLayoutPanel flpTableros;
     }
 }
 
