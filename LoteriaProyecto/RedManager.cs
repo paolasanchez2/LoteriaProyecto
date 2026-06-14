@@ -21,8 +21,9 @@ namespace LoteriaProyecto
         public event Action<string> MensajeRecibido;
 
         // 1. INICIAR COMO SERVIDOR (El que canta las cartas)
-        public void IniciarServidor(int puerto = 8888)
+        public void IniciarServidor(int puerto = 9999)
         {
+            
             try
             {
                 esServidor = true;
@@ -50,7 +51,7 @@ namespace LoteriaProyecto
         }
 
         // 2. INICIAR COMO CLIENTE (El que se conecta a la IP del Servidor)
-        public void ConectarAlServidor(string ipServidor, int puerto = 8888)
+        public void ConectarAlServidor(string ipServidor, int puerto = 9999)
         {
             try
             {

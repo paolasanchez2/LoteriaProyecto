@@ -298,9 +298,9 @@ namespace LoteriaProyecto
             // Generar y pintar la segunda tabla SOLO si el usuario la seleccionó
             if (jugarConDosTablas)
             {
-                for (int f = 0; f < 4; f++)
+                for (int f = 0; f < 5; f++)
                 {
-                    for (int c = 0; c < 4; c++)
+                    for (int c = 0; c < 5; c++)
                     {
                         Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
                         casillasVisuales2[f, c].BackColor = Color.White;
@@ -396,6 +396,7 @@ namespace LoteriaProyecto
         {
             soyServidor = true;
             red.IniciarServidor();
+            btnModoServidor.Enabled = false;
             btnIniciar.Enabled = true; // El servidor controla el mazo
             btnSiguiente.Enabled = false;
             this.Text = "Lotería - MODO SERVIDOR";
@@ -497,9 +498,9 @@ namespace LoteriaProyecto
                 }
             }
             // --- DENTRO DE IniciarTableroCliente() (Abajo de tu primer ciclo for) ---
-            for (int f = 0; f < 4; f++)
+            for (int f = 0; f < 5; f++)
             {
-                for (int c = 0; c < 4; c++)
+                for (int c = 0; c < 5; c++)
                 {
                     Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
                     casillasVisuales2[f, c].BackColor = Color.White;
