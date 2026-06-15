@@ -132,5 +132,29 @@ namespace LoteriaProyecto
             matrizCartas[fila, col] = nuevaCarta;
             matrizMarcados[fila, col] = false; // Nos aseguramos de que empiece sin frijolito
         }
+
+        public bool ValidarCartasMarcadasCantadas(List<int> cartasCantadas)
+        {
+            for (int f = 0; f < 5; f++)
+            {
+                for (int c = 0; c < 5; c++)
+                {
+                    if (matrizMarcados[f, c])
+                    {
+                        Carta carta = ObtenerCarta(f, c);
+
+                        if (!cartasCantadas.Contains(carta.Id))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
+
     }
 }

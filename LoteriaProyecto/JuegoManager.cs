@@ -16,6 +16,8 @@ namespace LoteriaProyecto
 
         public List<Tablero> TablerosJugador { get; private set; }
 
+        public List<int> CartasCantadasIds { get; private set; }
+
         private int indicePersonalizar = 0;
         // Creamos una instancia del manejador de sonidos adentro del juego
         public SonidoManager ControlSonido { get; private set; }
@@ -30,6 +32,7 @@ namespace LoteriaProyecto
             rndGlobal = new Random(); // Inicializamos el Random global
 
             TablerosJugador = new List<Tablero>();
+            CartasCantadasIds = new List<int>();
         }
 
         public void IniciarNuevoJuego()
@@ -54,14 +57,17 @@ namespace LoteriaProyecto
 
             CartaActual = MazoPrincipal.SacarSiguiente();
 
+            if (CartaActual != null)
+            {
+                CartasCantadasIds.Add(CartaActual.Id);
+            }
+
             if (CartaActual == null)
             {
                 EnCurso = false;
             }
             else
             {
-                // ¡Aquí es donde ocurre la magia! 
-                // Cada vez que sacas una carta, le ordenas a tu SonidoManager que la cante
                 ControlSonido.CantarCarta(CartaActual.Nombre);
             }
 
@@ -133,6 +139,7 @@ namespace LoteriaProyecto
         public void IniciarNuevoJuego(int cantidadTablas)
         {
             MazoPrincipal.Barajar();
+            CartasCantadasIds.Clear();
 
             TablerosJugador = new List<Tablero>();
 
@@ -152,6 +159,8 @@ namespace LoteriaProyecto
 
             EnCurso = true;
             CartaActual = null;
+
+            
         }
     }
 }

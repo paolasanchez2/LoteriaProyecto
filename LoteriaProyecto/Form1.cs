@@ -24,6 +24,9 @@ namespace LoteriaProyecto
         private RedManager red;
         private bool soyServidor = false;
 
+        private bool validacionAbierta = false;
+        private List<string> reclamantes = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -36,8 +39,8 @@ namespace LoteriaProyecto
             red = new RedManager();
             red.MensajeRecibido += ProcesarMensajeRed;
 
-            timerCartas.Tick += timerCartas_Tick; //Nuevo
-            
+            timerCartas.Tick += timerCartas_Tick;      
+
         }
         private bool ValidarSeleccionDeTablas()
         {
@@ -818,7 +821,6 @@ namespace LoteriaProyecto
 
         private void CrearTablerosDinamicos(int cantidadTablas)
         {
-            MessageBox.Show("Creando " + cantidadTablas + " tablas");
 
             flpTableros.Controls.Clear();
             listaCasillasVisuales.Clear();
@@ -884,43 +886,89 @@ namespace LoteriaProyecto
             int col = posicion % 5;
 
             Tablero tablero = juego.TablerosJugador[indiceTabla];
-            Carta cartaClickeada = tablero.ObtenerCarta(fila, col);
 
-            if (juego.CartaActual != null && cartaClickeada.Id == juego.CartaActual.Id)
+            tablero.MarcarPosicion(fila, col);
+            juego.ControlSonido.ReproducirEfecto("frijolito");
+
+            picPresionado.AccessibleName = "Marcado";
+            picPresionado.Invalidate();
+
+        }
+
+        private void btnLoteria_Click(object sender, EventArgs e)
+        {
+            timerCartas.Stop();
+
+            bool hayGanador = false;
+
+            foreach (Tablero tablero in juego.TablerosJugador)
             {
-                tablero.MarcarPosicion(fila, col);
-                juego.ControlSonido.ReproducirEfecto("frijolito");
+                bool figuraCorrecta =
+                    tablero.VerificarSiGano(cmbModoJuego.Text);
 
-                picPresionado.AccessibleName = "Marcado";
-                picPresionado.Invalidate();
+                bool cartasValidas =
+                    tablero.ValidarCartasMarcadasCantadas(
+                        juego.CartasCantadasIds);
 
-                if (tablero.VerificarSiGano(cmbModoJuego.Text))
+                if (figuraCorrecta && cartasValidas)
                 {
-                    juego.ControlSonido.ReproducirEfecto("ganar");
-                    juego.TerminarJuego();
-                    timerCartas.Stop();
-                    btnSiguiente.Enabled = false;
-
-                    if (red != null)
-                        red.EnviarMensaje("LOTERIA");
-
-                    MessageBox.Show($"¡¡LOTERÍA!! Ganaste con la Tabla {indiceTabla + 1}.",
-                                    "Victoria",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                    hayGanador = true;
+                    break;
                 }
+            }
+
+            if (!hayGanador)
+            {
+                MessageBox.Show(
+                    "No tienes una lotería válida.",
+                    "Lotería Incorrecta",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            if (!validacionAbierta)
+            {
+                validacionAbierta = true;
+
+                reclamantes.Clear();
+
+                reclamantes.Add(
+                    soyServidor ? "Servidor" : "Cliente");
+
+
+                timerValidacion.Stop();
+                timerValidacion.Interval = 10000;
+                timerValidacion.Start();
+
+                MessageBox.Show(
+                    "Lotería válida detectada.\n" +
+                    "Esperando 10 segundos por otros jugadores...");
             }
             else
             {
-                juego.ControlSonido.ReproducirEfecto("error");
-
-                string mensajeError = (juego.CartaActual == null)
-                    ? "¡Aún no ha salido ninguna carta del mazo!"
-                    : $"La carta '{cartaClickeada.Nombre}' no ha salido. La actual es '{juego.CartaActual.Nombre}'.";
-
-                MessageBox.Show(mensajeError, "Carta Incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                reclamantes.Add(
+                    soyServidor ? "Servidor" : "Cliente");
             }
         }
+
+        private void timerValidacion_Tick(object sender, EventArgs e)
+        {
+            timerValidacion.Stop();
+            validacionAbierta = false;
+
+            string ganador = reclamantes.Count > 0 ? reclamantes[0] : "Sin ganador";
+
+            MessageBox.Show("Fin de validación.\nGanador: " + ganador);
+
+            juego.TerminarJuego();
+            timerCartas.Stop();
+            btnSiguiente.Enabled = false;
+        }
+
+        
+
 
     }
 }

@@ -60,6 +60,8 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnPersonalizarTabla = new System.Windows.Forms.Button();
             this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnLoteria = new System.Windows.Forms.Button();
+            this.timerValidacion = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -346,9 +348,9 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1744, 272);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1745, 234);
             this.gbControlesJuego.Name = "gbControlesJuego";
-            this.gbControlesJuego.Size = new System.Drawing.Size(282, 220);
+            this.gbControlesJuego.Size = new System.Drawing.Size(282, 253);
             this.gbControlesJuego.TabIndex = 21;
             this.gbControlesJuego.TabStop = false;
             this.gbControlesJuego.Text = "Controles de juego";
@@ -414,12 +416,29 @@
             this.flpTableros.Size = new System.Drawing.Size(1284, 654);
             this.flpTableros.TabIndex = 27;
             // 
+            // btnLoteria
+            // 
+            this.btnLoteria.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLoteria.Location = new System.Drawing.Point(814, 693);
+            this.btnLoteria.Name = "btnLoteria";
+            this.btnLoteria.Size = new System.Drawing.Size(482, 71);
+            this.btnLoteria.TabIndex = 28;
+            this.btnLoteria.Text = "Loteria\r\n";
+            this.btnLoteria.UseVisualStyleBackColor = true;
+            this.btnLoteria.Click += new System.EventHandler(this.btnLoteria_Click);
+            // 
+            // timerValidacion
+            // 
+            this.timerValidacion.Interval = 1000;
+            this.timerValidacion.Tick += new System.EventHandler(this.timerValidacion_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(2036, 1024);
+            this.Controls.Add(this.btnLoteria);
             this.Controls.Add(this.flpTableros);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -479,6 +498,8 @@
         private System.Windows.Forms.NumericUpDown numCantidadTablas;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.FlowLayoutPanel flpTableros;
+        private System.Windows.Forms.Button btnLoteria;
+        private System.Windows.Forms.Timer timerValidacion;
     }
 }
 
