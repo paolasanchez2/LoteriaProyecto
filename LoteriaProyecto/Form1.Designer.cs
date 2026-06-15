@@ -170,7 +170,7 @@
             this.btnGuardarFavorito.Name = "btnGuardarFavorito";
             this.btnGuardarFavorito.Size = new System.Drawing.Size(153, 82);
             this.btnGuardarFavorito.TabIndex = 9;
-            this.btnGuardarFavorito.Text = "Guardar Tabla en Favoritos";
+            this.btnGuardarFavorito.Text = "Guardar Paquete";
             this.btnGuardarFavorito.UseVisualStyleBackColor = true;
             this.btnGuardarFavorito.Click += new System.EventHandler(this.btnGuardarFavorito_Click);
             // 

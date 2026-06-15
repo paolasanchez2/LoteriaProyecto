@@ -603,15 +603,36 @@ namespace LoteriaProyecto
 
         private void CmbFavoritoTabla_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ComboBox combo = (ComboBox)sender;
+            ComboBox comboActual = (ComboBox)sender;
 
-            if (combo.SelectedItem == null) return;
+            if (comboActual.SelectedItem == null) return;
 
-            string seleccion = combo.SelectedItem.ToString();
+            string seleccion = comboActual.SelectedItem.ToString();
 
             if (seleccion == "Aleatoria") return;
 
-            int indiceTabla = (int)combo.Tag;
+            foreach (ComboBox otroCombo in combosFavoritosPorTabla)
+            {
+                if (otroCombo == comboActual) continue;
+
+                if (otroCombo.SelectedItem != null &&
+                    otroCombo.SelectedItem.ToString() == seleccion)
+                {
+                    MessageBox.Show(
+                        "Esta tabla favorita ya está en uso en otra tabla.",
+                        "Tabla repetida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    comboActual.SelectedIndexChanged -= CmbFavoritoTabla_SelectedIndexChanged;
+                    comboActual.SelectedIndex = 0;
+                    comboActual.SelectedIndexChanged += CmbFavoritoTabla_SelectedIndexChanged;
+
+                    return;
+                }
+            }
+
+            int indiceTabla = (int)comboActual.Tag;
 
             CargarFavoritoEnTabla(indiceTabla, seleccion);
         }
