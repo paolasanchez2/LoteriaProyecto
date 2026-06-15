@@ -18,28 +18,27 @@ namespace LoteriaProyecto
         private JuegoManager juego;
 
         
-        private PictureBox[,] casillasVisuales;
-        private PictureBox[,] casillasVisuales2;
+       
 
         private RedManager red;
         private bool soyServidor = false;
 
         private bool validacionAbierta = false;
         private List<string> reclamantes = new List<string>();
+        private List<ComboBox> combosFavoritosPorTabla;
 
         public Form1()
         {
             InitializeComponent();
             juego = new JuegoManager();
-            casillasVisuales = new PictureBox[5, 5];
-            casillasVisuales2 = new PictureBox[5, 5];
+            
             listaCasillasVisuales = new List<PictureBox[,]>();
-            CrearTableroEnPantalla();
-            CrearTableroEnPantalla2S();
+           
             red = new RedManager();
             red.MensajeRecibido += ProcesarMensajeRed;
 
-            timerCartas.Tick += timerCartas_Tick;      
+            timerCartas.Tick += timerCartas_Tick;
+            combosFavoritosPorTabla = new List<ComboBox>();
 
         }
         private bool ValidarSeleccionDeTablas()
@@ -64,277 +63,12 @@ namespace LoteriaProyecto
 
         }
 
-        // Genera los 16 PictureBoxes de forma dinámica en la interfaz
-        private void CrearTableroEnPantalla()
-        {
-            int tamañoCasilla = 65; // Tamaño en píxeles de cada cartita
-            int espacio = 5;       // Separación entre cartitas
-
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    PictureBox pic = new PictureBox();
-                    pic.Width = tamañoCasilla;
-                    pic.Height = tamañoCasilla;
-                    // Calculamos la posición X e Y matemáticamente en la cuadrícula
-                    pic.Left = c * (tamañoCasilla + espacio);
-                    pic.Top = f * (tamañoCasilla + espacio);
-                    pic.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pic.BorderStyle = BorderStyle.FixedSingle;
-                    pic.BackColor = Color.White;
-
-                    // Guardamos la fila y columna en la propiedad Tag para saber cuál es al dar clic
-                    pic.Tag = new Point(f, c);
-
-                    // Asignamos el evento Clic (Tema 1.2.3 / Eventos)
-                    pic.Click += PixCasilla_Click;
-                    pic.Paint += PicCasilla_Paint;
-
-                    // Lo agregamos al panel y a nuestro arreglo interno
-                    panelTablero.Controls.Add(pic);
-                    casillasVisuales[f, c] = pic;
-                }
-            }
-        }
-        private void CrearTableroEnPantalla2S()
-        {
-            int tamañoCasilla = 65; // Tamaño en píxeles de cada cartita
-            int espacio = 5;       // Separación entre cartitas
-
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    PictureBox pic = new PictureBox();
-                    pic.Width = tamañoCasilla;
-                    pic.Height = tamañoCasilla;
-                    // Calculamos la posición X e Y matemáticamente en la cuadrícula
-                    pic.Left = c * (tamañoCasilla + espacio);
-                    pic.Top = f * (tamañoCasilla + espacio);
-                    pic.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pic.BorderStyle = BorderStyle.FixedSingle;
-                    pic.BackColor = Color.White;
-
-                    // Guardamos la fila y columna en la propiedad Tag para saber cuál es al dar clic
-                    pic.Tag = new Point(f, c);
-
-                    // Asignamos el evento Clic (Tema 1.2.3 / Eventos)
-                    pic.Click += PixCasillaTablero2_Click;
-                    pic.Paint += PicCasilla_Paint;
-
-                    // Lo agregamos al panel y a nuestro arreglo interno
-                    panelTablero2.Controls.Add(pic);
-                    casillasVisuales2[f, c] = pic; 
-                }
-            }
-        }
-        // Evento que se dispara cuando el usuario presiona una carta de su tabla
-        private void PixCasilla_Click(object sender, EventArgs e)
-        {
-            if (!ValidarSeleccionDeTablas()) return;
-            PictureBox picPresionado = (PictureBox)sender;
-            Point posicion = (Point)picPresionado.Tag;
-            int fila = posicion.X;
-            int col = posicion.Y;
-            // --- MODO CONFIGURACIÓN / PERSONALIZACIÓN ---
-            if (!juego.EnCurso)
-            {
-                // 1. Pedimos la siguiente carta del catálogo global
-                Carta cartaAsignada = juego.ObtenerSiguienteCartaParaPersonalizar();
-
-                if (cartaAsignada != null)
-                {
-                    // 2. La registramos en la lógica del tablero 1
-                    juego.TableroJugador.AsignarCartaEnPosicion(fila, col, cartaAsignada);
-
-                    // 3. ¡LA MAGIA FALTANTE!: Forzar al PictureBox a cargar y mostrar la nueva foto
-                    try
-                    {
-                        if (System.IO.File.Exists(cartaAsignada.RutaImagen))
-                        {
-                            // Liberamos la imagen anterior de la memoria para que no se bloquee el archivo
-                            if (picPresionado.Image != null) picPresionado.Image.Dispose();
-
-                            // Cargamos la nueva carta seleccionada
-                            picPresionado.Image = Image.FromFile(cartaAsignada.RutaImagen);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error visual al personalizar: " + ex.Message);
-                    }
-                }
-                return; // Detiene la ejecución aquí para que no valide gane ni ponga frijolitos
-            }
-            Carta cartaClickeada = juego.TableroJugador.ObtenerCarta(fila, col);
-
-
-            // 1. VALIDACIÓN: ¿Es la carta correcta?
-            if (juego.CartaActual != null && cartaClickeada.Id == juego.CartaActual.Id)
-            {
-                // Registrar en la lógica
-                juego.TableroJugador.MarcarPosicion(fila, col);
-                juego.ControlSonido.ReproducirEfecto("frijolito");
-
-                picPresionado.AccessibleName = "Marcado"; // Usamos esto como una bandera oculta
-                picPresionado.Invalidate(); // Fuerza al evento Paint a ejecutarse
-                                            // --- EFECTO VISUAL: Dibujar encima de la carta ---
-                                            // Forzamos al PictureBox a redibujarse para que ejecute nuestro código de dibujo
-
-
-                // Verificar gane
-                if (juego.TableroJugador.VerificarSiGano(cmbModoJuego.Text))
-                {
-                    juego.ControlSonido.ReproducirEfecto("ganar");
-                    juego.TerminarJuego();
-                    timerCartas.Stop();
-                    btnSiguiente.Enabled = false;
-                    MessageBox.Show("¡¡LOTERÍA!! ¡Felicidades, ganaste!", "Victoria", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                // 2. VALIDACIÓN INCORRECTA: Lanzar mensaje de advertencia
-                juego.ControlSonido.ReproducirEfecto("error");
-
-                string mensajeError = (juego.CartaActual == null)
-                    ? "¡Aún no ha salido ninguna carta del mazo! Espera a que empiece el juego."
-                    : $"La carta '{cartaClickeada.Nombre}' no ha salido. La carta actual es '{juego.CartaActual.Nombre}'.";
-
-                MessageBox.Show(mensajeError, "Carta Incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-        private void PixCasillaTablero2_Click(object sender, EventArgs e)
-        {
-            if (numCantidadTablas.Value < 2) return;
-            PictureBox picPresionado = (PictureBox)sender;
-            Point posicion = (Point)picPresionado.Tag;
-            int fila = posicion.X;
-            int col = posicion.Y;
-
-            // --- MODO CONFIGURACIÓN / PERSONALIZACIÓN TABLA 2 ---
-            if (!juego.EnCurso)
-            {
-                Carta cartaAsignada = juego.ObtenerSiguienteCartaParaPersonalizar();
-
-                if (cartaAsignada != null)
-                {
-                    // La registramos en la lógica de la TABLA 2
-                    juego.TableroJugador2.AsignarCartaEnPosicion(fila, col, cartaAsignada);
-
-                    // Actualizamos el PictureBox de la tabla 2 al instante
-                    try
-                    {
-                        if (System.IO.File.Exists(cartaAsignada.RutaImagen))
-                        {
-                            if (picPresionado.Image != null) picPresionado.Image.Dispose();
-                            picPresionado.Image = Image.FromFile(cartaAsignada.RutaImagen);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error visual al personalizar tabla 2: " + ex.Message);
-                    }
-                }
-                return;
-            }
-
-            // NOTA: Usamos TableroJugador2
-            Carta cartaClickeada = juego.TableroJugador2.ObtenerCarta(fila, col);
-
-            if (juego.CartaActual != null && cartaClickeada.Id == juego.CartaActual.Id)
-            {
-                juego.TableroJugador2.MarcarPosicion(fila, col);
-                juego.ControlSonido.ReproducirEfecto("frijolito");
-
-                picPresionado.AccessibleName = "Marcado";
-                picPresionado.Invalidate();
-
-                // Verificamos gane en el Tablero 2
-                if (juego.TableroJugador2.VerificarSiGano(cmbModoJuego.Text))
-                {
-                    juego.ControlSonido.ReproducirEfecto("ganar");
-                    juego.TerminarJuego();
-                    timerCartas.Stop();
-                    btnSiguiente.Enabled = false;
-
-                    if (red != null) red.EnviarMensaje("LOTERIA");
-
-                    MessageBox.Show("¡¡LOTERÍA!! ¡Tu segunda tabla ha ganado!", "Victoria", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            else
-            {
-                juego.ControlSonido.ReproducirEfecto("error");
-                string mensajeError = (juego.CartaActual == null)
-                    ? "¡Aún no ha salido ninguna carta del mazo!"
-                    : $"La carta '{cartaClickeada.Nombre}' no ha salido. La actual es '{juego.CartaActual.Nombre}'.";
-
-                MessageBox.Show(mensajeError, "Carta Incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-
-
         private void btnIniciar_Click(object sender, EventArgs e)
         {
             int cantidadTablas = (int)numCantidadTablas.Value;
 
             juego.IniciarNuevoJuego(cantidadTablas);
-
             CrearTablerosDinamicos(cantidadTablas);
-
-            bool jugarConDosTablas = cantidadTablas >= 2;
-
-            panelTablero2.Visible = jugarConDosTablas;
-
-            // Pintar tabla 1
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
-                    casillasVisuales[f, c].BackColor = Color.White;
-
-                    try
-                    {
-                        if (System.IO.File.Exists(carta.RutaImagen))
-                            casillasVisuales[f, c].Image = Image.FromFile(carta.RutaImagen);
-
-                        casillasVisuales[f, c].AccessibleName = "";
-                    }
-                    catch
-                    {
-                        casillasVisuales[f, c].Image = null;
-                    }
-                }
-            }
-
-            // Pintar tabla 2 solo si cantidadTablas >= 2
-            if (jugarConDosTablas)
-            {
-                for (int f = 0; f < 5; f++)
-                {
-                    for (int c = 0; c < 5; c++)
-                    {
-                        Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
-                        casillasVisuales2[f, c].BackColor = Color.White;
-
-                        try
-                        {
-                            if (System.IO.File.Exists(carta.RutaImagen))
-                                casillasVisuales2[f, c].Image = Image.FromFile(carta.RutaImagen);
-
-                            casillasVisuales2[f, c].AccessibleName = "";
-                        }
-                        catch
-                        {
-                            casillasVisuales2[f, c].Image = null;
-                        }
-                    }
-                }
-            }
 
             btnSiguiente.Enabled = true;
             picCartaActual.Image = null;
@@ -505,9 +239,7 @@ namespace LoteriaProyecto
 
                     cmbModoJuego.Text = modoDelServidor;
 
-                    numCantidadTablas.Value = cantidadTablasServidor;
-
-                    panelTablero2.Visible = (cantidadTablasServidor >= 2);
+                    numCantidadTablas.Value = cantidadTablasServidor;              
 
                     numVelocidad.Value = velocidadDelServidor;
                     timerCartas.Interval = velocidadDelServidor * 1000;
@@ -524,63 +256,24 @@ namespace LoteriaProyecto
             juego.IniciarNuevoJuego(cantidadTablas);
             CrearTablerosDinamicos(cantidadTablas);
 
-
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
-                    casillasVisuales[f, c].BackColor = Color.White;
-                    casillasVisuales[f, c].AccessibleName = ""; 
-
-                    try
-                    {
-                        if (System.IO.File.Exists(carta.RutaImagen))
-                            casillasVisuales[f, c].Image = Image.FromFile(carta.RutaImagen);
-                    }
-                    catch (Exception)
-                    {
-                        casillasVisuales[f, c].Image = null;
-                    }
-                }
-            }
-            // --- DENTRO DE IniciarTableroCliente() (Abajo de tu primer ciclo for) ---
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
-                    casillasVisuales2[f, c].BackColor = Color.White;
-                    casillasVisuales2[f, c].AccessibleName = ""; // Limpia marcas anteriores
-
-                    try
-                    {
-                        if (System.IO.File.Exists(carta.RutaImagen))
-                            casillasVisuales2[f, c].Image = Image.FromFile(carta.RutaImagen);
-                    }
-                    catch (Exception)
-                    {
-                        casillasVisuales2[f, c].Image = null;
-                    }
-                }
-            }
             picCartaActual.Image = null;
         }
 
         private void btnGuardarFavorito_Click(object sender, EventArgs e)
         {
             if (!ValidarSeleccionDeTablas()) return;
+
             string carpetaFavoritos = "TablasFavoritas";
+
             if (!System.IO.Directory.Exists(carpetaFavoritos))
             {
                 System.IO.Directory.CreateDirectory(carpetaFavoritos);
             }
 
-            // Pedimos el nombre para el "Paquete" de 2 tablas
             string nombreTabla = Microsoft.VisualBasic.Interaction.InputBox(
                 "Introduce el nombre para guardar tus tablas actuales:",
-                "Guardar Par de Tablas",
-                "MisDosTablas"
+                "Guardar Paquete de Tablas",
+                "MisTablas"
             );
 
             if (string.IsNullOrWhiteSpace(nombreTabla)) return;
@@ -589,36 +282,45 @@ namespace LoteriaProyecto
             {
                 List<string> lineas = new List<string>();
 
-                // 1. Guardamos los datos de la TABLA 1 (Marcamos con un prefijo "T1")
-                for (int f = 0; f < 5; f++)
+                for (int t = 0; t < juego.TablerosJugador.Count; t++)
                 {
-                    for (int c = 0; c < 5; c++)
+                    Tablero tablero = juego.TablerosJugador[t];
+
+                    for (int f = 0; f < 5; f++)
                     {
-                        Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
-                        if (carta != null)
-                            lineas.Add($"T1,{f},{c},{carta.Id}");
+                        for (int c = 0; c < 5; c++)
+                        {
+                            Carta carta = tablero.ObtenerCarta(f, c);
+
+                            if (carta != null)
+                            {
+                                lineas.Add($"T{t + 1},{f},{c},{carta.Id}");
+                            }
+                        }
                     }
                 }
 
-                // 2. Guardamos los datos de la TABLA 2 (Marcamos con un prefijo "T2")
-                for (int f = 0; f < 5; f++)
-                {
-                    for (int c = 0; c < 5; c++)
-                    {
-                        Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
-                        if (carta != null)
-                            lineas.Add($"T2,{f},{c},{carta.Id}");
-                    }
-                }
+                string rutaArchivo = System.IO.Path.Combine(
+                    carpetaFavoritos,
+                    nombreTabla + ".txt"
+                );
 
-                string rutaArchivo = System.IO.Path.Combine(carpetaFavoritos, nombreTabla + ".txt");
                 System.IO.File.WriteAllLines(rutaArchivo, lineas);
 
-                MessageBox.Show($"¡Tus dos tablas han sido guardadas en '{nombreTabla}'!", "Favoritos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    $"¡Tus {juego.TablerosJugador.Count} tablas han sido guardadas en '{nombreTabla}'!",
+                    "Favoritos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
                 ActualizarListaFavoritos();
+                ActualizarCombosFavoritosPorTabla();
             }
-            catch (Exception ex) { MessageBox.Show("Error al guardar: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar: " + ex.Message);
+            }
         }
 
         private void ActualizarListaFavoritos()
@@ -644,103 +346,10 @@ namespace LoteriaProyecto
                 cmbTablasFavoritas.SelectedIndex = 0;
             }
         }
-        private void btnCargarFavorito_Click(object sender, EventArgs e)
-        {
-            
-            if (!ValidarSeleccionDeTablas()) return;
+       
+      
 
-            if (cmbTablasFavoritas.SelectedItem == null)
-            {
-                MessageBox.Show("Por favor, selecciona una combinación de la lista.", "Aviso");
-                return;
-            }
-
-            string nombreArchivoSeleccionado = cmbTablasFavoritas.SelectedItem.ToString();
-            string rutaArchivo = System.IO.Path.Combine("TablasFavoritas", nombreArchivoSeleccionado + ".txt");
-
-            if (!System.IO.File.Exists(rutaArchivo)) return;
-
-            try
-            {
-
-                bool cargarSegundaTabla = numCantidadTablas.Value >= 2;
-
-                string[] lineas = System.IO.File.ReadAllLines(rutaArchivo);
-                foreach (string linea in lineas)
-                {
-                    string[] datos = linea.Split(',');
-
-                    string tipoTablero = datos[0]; // "T1" o "T2"
-                    int f = int.Parse(datos[1]);
-                    int c = int.Parse(datos[2]);
-                    int idCarta = int.Parse(datos[3]);
-
-                    Carta cartaFavorita = juego.BuscarCartaPorIdGlobal(idCarta);
-
-                    // 2. ¡EL FILTRO INTELIGENTE!:
-                    if (tipoTablero == "T1")
-                    {
-                        juego.TableroJugador.AsignarCartaEnPosicion(f, c, cartaFavorita);
-                    }
-                    else if (tipoTablero == "T2" && cargarSegundaTabla) 
-                    {
-                        juego.TableroJugador2.AsignarCartaEnPosicion(f, c, cartaFavorita);
-                    }
-                }
-
-                // 3. Sincronizamos la visibilidad del segundo panel visual en la pantalla
-                panelTablero2.Visible = cargarSegundaTabla;
-
-                // Forzamos el refresco de los PictureBoxes en pantalla
-                ActualizarPantallaTableroVisual();
-
-                string mensajeExito = cargarSegundaTabla
-                    ? $"¡Se cargaron las 2 tablas de '{nombreArchivoSeleccionado}'!"
-                    : $"¡Se cargó únicamente la Tabla 1 de '{nombreArchivoSeleccionado}'!";
-
-                MessageBox.Show(mensajeExito, "Favoritos", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex) { MessageBox.Show("Error al cargar favoritos: " + ex.Message); }
-        }
-        private void ActualizarPantallaTableroVisual()
-        {
-            // 1. Refresco Tabla 1 (Se queda igual)
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    Carta carta = juego.TableroJugador.ObtenerCarta(f, c);
-                    casillasVisuales[f, c].BackColor = Color.White;
-                    casillasVisuales[f, c].AccessibleName = "";
-
-                    if (carta != null && System.IO.File.Exists(carta.RutaImagen))
-                        casillasVisuales[f, c].Image = Image.FromFile(carta.RutaImagen);
-                    else
-                        casillasVisuales[f, c].Image = null;
-                }
-            }
-
-            // 2. Refresco Tabla 2 - ¡BLINDADO CONTRA NULOS!
-            // Solo intenta refrescar la segunda tabla si el objeto existe y tiene cartas adentro
-            if (juego.TableroJugador2 != null)
-            {
-                for (int f = 0; f < 5; f++)
-                {
-                    for (int c = 0; c < 5; c++)
-                    {
-                        Carta carta = juego.TableroJugador2.ObtenerCarta(f, c);
-                        casillasVisuales2[f, c].BackColor = Color.White;
-                        casillasVisuales2[f, c].AccessibleName = "";
-
-                        if (carta != null && System.IO.File.Exists(carta.RutaImagen))
-                            casillasVisuales2[f, c].Image = Image.FromFile(carta.RutaImagen);
-                        else
-                            casillasVisuales2[f, c].Image = null;
-                    }
-                }
-            }
-        }
-
+      
         private void AgregarAlHistorialVisual(Carta carta)
         {
             if (carta == null) return;
@@ -766,10 +375,7 @@ namespace LoteriaProyecto
             flpHistorialImagenes.Controls.SetChildIndex(picHistorial, 0);
         }
 
-        private void panelTablero_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        
 
         private void btnAutomatico_Click(object sender, EventArgs e)
         {
@@ -812,6 +418,7 @@ namespace LoteriaProyecto
             ventana.ShowDialog();
 
             ActualizarListaFavoritos();
+            ActualizarCombosFavoritosPorTabla();
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -821,7 +428,7 @@ namespace LoteriaProyecto
 
         private void CrearTablerosDinamicos(int cantidadTablas)
         {
-
+            combosFavoritosPorTabla.Clear();
             flpTableros.Controls.Clear();
             listaCasillasVisuales.Clear();
 
@@ -833,7 +440,35 @@ namespace LoteriaProyecto
                 var grupoTabla = new System.Windows.Forms.GroupBox();
                 grupoTabla.Text = "Tabla " + (t + 1);
                 grupoTabla.Width = 380;
-                grupoTabla.Height = 410;
+                grupoTabla.Height = 460;
+
+                ComboBox cmbFavoritoTabla = new ComboBox();
+                cmbFavoritoTabla.Width = 220;
+                cmbFavoritoTabla.Left = 15;
+                cmbFavoritoTabla.Top = 25;
+                cmbFavoritoTabla.DropDownStyle = ComboBoxStyle.DropDownList;
+                cmbFavoritoTabla.Tag = t;
+
+                cmbFavoritoTabla.Items.Add("Aleatoria");
+
+                string carpetaFavoritos = "TablasFavoritas";
+
+                if (System.IO.Directory.Exists(carpetaFavoritos))
+                {
+                    string[] archivos = System.IO.Directory.GetFiles(carpetaFavoritos, "*.txt");
+
+                    foreach (string archivo in archivos)
+                    {
+                        cmbFavoritoTabla.Items.Add(
+                            System.IO.Path.GetFileNameWithoutExtension(archivo));
+                    }
+                }
+
+                cmbFavoritoTabla.SelectedIndex = 0;
+                cmbFavoritoTabla.SelectedIndexChanged += CmbFavoritoTabla_SelectedIndexChanged;
+
+                grupoTabla.Controls.Add(cmbFavoritoTabla);
+                combosFavoritosPorTabla.Add(cmbFavoritoTabla);
 
                 PictureBox[,] casillas = new PictureBox[5, 5];
 
@@ -846,7 +481,7 @@ namespace LoteriaProyecto
                         pic.Width = tamañoCasilla;
                         pic.Height = tamañoCasilla;
                         pic.Left = 15 + c * (tamañoCasilla + espacio);
-                        pic.Top = 25 + f * (tamañoCasilla + espacio);
+                        pic.Top = 65 + f * (tamañoCasilla + espacio);
                         pic.SizeMode = PictureBoxSizeMode.StretchImage;
                         pic.BorderStyle = BorderStyle.FixedSingle;
                         pic.BackColor = Color.White;
@@ -862,7 +497,6 @@ namespace LoteriaProyecto
                         pic.Tag = new Point(t, f * 5 + c);
                         pic.Click += PicCasillaDinamica_Click;
                         pic.Paint += PicCasilla_Paint;
-
 
                         grupoTabla.Controls.Add(pic);
                         casillas[f, c] = pic;
@@ -967,8 +601,161 @@ namespace LoteriaProyecto
             btnSiguiente.Enabled = false;
         }
 
-        
+        private void CmbFavoritoTabla_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
 
+            if (combo.SelectedItem == null) return;
 
+            string seleccion = combo.SelectedItem.ToString();
+
+            if (seleccion == "Aleatoria") return;
+
+            int indiceTabla = (int)combo.Tag;
+
+            CargarFavoritoEnTabla(indiceTabla, seleccion);
+        }
+
+        private void CargarFavoritoEnTabla(int indiceTabla, string nombreFavorito)
+        {
+            string rutaArchivo = System.IO.Path.Combine(
+                "TablasFavoritas",
+                nombreFavorito + ".txt");
+
+            if (!System.IO.File.Exists(rutaArchivo)) return;
+
+            string[] lineas = System.IO.File.ReadAllLines(rutaArchivo);
+
+            foreach (string linea in lineas)
+            {
+                string[] datos = linea.Split(',');
+
+                // Formato actual: T1,f,c,id
+                int f = int.Parse(datos[1]);
+                int c = int.Parse(datos[2]);
+                int idCarta = int.Parse(datos[3]);
+
+                Carta cartaFavorita = juego.BuscarCartaPorIdGlobal(idCarta);
+
+                juego.TablerosJugador[indiceTabla]
+                    .AsignarCartaEnPosicion(f, c, cartaFavorita);
+
+                PictureBox pic =
+                    listaCasillasVisuales[indiceTabla][f, c];
+
+                pic.AccessibleName = "";
+
+                if (System.IO.File.Exists(cartaFavorita.RutaImagen))
+                {
+                    pic.Image = Image.FromFile(cartaFavorita.RutaImagen);
+                }
+            }
+        }
+
+        private void ActualizarCombosFavoritosPorTabla()
+        {
+            foreach (ComboBox combo in combosFavoritosPorTabla)
+            {
+                string seleccionActual = combo.SelectedItem?.ToString();
+
+                combo.Items.Clear();
+                combo.Items.Add("Aleatoria");
+
+                string carpetaFavoritos = "TablasFavoritas";
+
+                if (System.IO.Directory.Exists(carpetaFavoritos))
+                {
+                    string[] archivos = System.IO.Directory.GetFiles(carpetaFavoritos, "*.txt");
+
+                    foreach (string archivo in archivos)
+                    {
+                        combo.Items.Add(System.IO.Path.GetFileNameWithoutExtension(archivo));
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(seleccionActual) &&
+                    combo.Items.Contains(seleccionActual))
+                {
+                    combo.SelectedItem = seleccionActual;
+                }
+                else
+                {
+                    combo.SelectedIndex = 0;
+                }
+            }
+        }
+
+        private void btnCargarPaquete_Click(object sender, EventArgs e)
+        {
+            if (cmbTablasFavoritas.SelectedItem == null)
+            {
+                MessageBox.Show("Selecciona un paquete de tablas.");
+                return;
+            }
+
+            string nombrePaquete = cmbTablasFavoritas.SelectedItem.ToString();
+            string rutaArchivo = System.IO.Path.Combine("TablasFavoritas", nombrePaquete + ".txt");
+
+            if (!System.IO.File.Exists(rutaArchivo))
+            {
+                MessageBox.Show("No se encontró el archivo del paquete.");
+                return;
+            }
+
+            try
+            {
+                string[] lineas = System.IO.File.ReadAllLines(rutaArchivo);
+
+                int cantidadTablas = 0;
+
+                foreach (string linea in lineas)
+                {
+                    string[] datos = linea.Split(',');
+                    string tipoTabla = datos[0]; // T1, T2, T3...
+
+                    int numeroTabla = int.Parse(tipoTabla.Replace("T", ""));
+                    if (numeroTabla > cantidadTablas)
+                        cantidadTablas = numeroTabla;
+                }
+
+                numCantidadTablas.Value = cantidadTablas;
+
+                juego.IniciarNuevoJuego(cantidadTablas);
+                CrearTablerosDinamicos(cantidadTablas);
+
+                foreach (string linea in lineas)
+                {
+                    string[] datos = linea.Split(',');
+
+                    string tipoTabla = datos[0];
+                    int indiceTabla = int.Parse(tipoTabla.Replace("T", "")) - 1;
+
+                    int f = int.Parse(datos[1]);
+                    int c = int.Parse(datos[2]);
+                    int idCarta = int.Parse(datos[3]);
+
+                    Carta carta = juego.BuscarCartaPorIdGlobal(idCarta);
+
+                    juego.TablerosJugador[indiceTabla].AsignarCartaEnPosicion(f, c, carta);
+
+                    PictureBox pic = listaCasillasVisuales[indiceTabla][f, c];
+
+                    pic.AccessibleName = "";
+
+                    if (System.IO.File.Exists(carta.RutaImagen))
+                    {
+                        pic.Image = Image.FromFile(carta.RutaImagen);
+                    }
+
+                    pic.Invalidate();
+                }
+
+                MessageBox.Show($"Paquete '{nombrePaquete}' cargado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar paquete: " + ex.Message);
+            }
+        }
     }
 }

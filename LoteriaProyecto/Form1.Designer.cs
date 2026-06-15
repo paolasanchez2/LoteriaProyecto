@@ -33,16 +33,13 @@
             this.btnIniciar = new System.Windows.Forms.Button();
             this.btnSiguiente = new System.Windows.Forms.Button();
             this.picCartaActual = new System.Windows.Forms.PictureBox();
-            this.panelTablero = new System.Windows.Forms.Panel();
             this.timerCartas = new System.Windows.Forms.Timer(this.components);
             this.txtIP = new System.Windows.Forms.TextBox();
             this.btnModoServidor = new System.Windows.Forms.Button();
             this.btnModoCliente = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbModoJuego = new System.Windows.Forms.ComboBox();
-            this.panelTablero2 = new System.Windows.Forms.Panel();
             this.btnGuardarFavorito = new System.Windows.Forms.Button();
-            this.btnCargarFavorito = new System.Windows.Forms.Button();
             this.lstHistorial = new System.Windows.Forms.ListBox();
             this.flpHistorialImagenes = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,9 +56,10 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.btnPersonalizarTabla = new System.Windows.Forms.Button();
-            this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
             this.btnLoteria = new System.Windows.Forms.Button();
             this.timerValidacion = new System.Windows.Forms.Timer(this.components);
+            this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnCargarPaquete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -105,16 +103,6 @@
             this.picCartaActual.TabIndex = 2;
             this.picCartaActual.TabStop = false;
             this.picCartaActual.Click += new System.EventHandler(this.picCartaActual_Click);
-            // 
-            // panelTablero
-            // 
-            this.panelTablero.Location = new System.Drawing.Point(12, 13);
-            this.panelTablero.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelTablero.Name = "panelTablero";
-            this.panelTablero.Size = new System.Drawing.Size(524, 536);
-            this.panelTablero.TabIndex = 3;
-            this.panelTablero.Visible = false;
-            this.panelTablero.Paint += new System.Windows.Forms.PaintEventHandler(this.panelTablero_Paint);
             // 
             // timerCartas
             // 
@@ -175,15 +163,6 @@
             this.cmbModoJuego.Size = new System.Drawing.Size(266, 30);
             this.cmbModoJuego.TabIndex = 8;
             // 
-            // panelTablero2
-            // 
-            this.panelTablero2.Location = new System.Drawing.Point(559, 13);
-            this.panelTablero2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelTablero2.Name = "panelTablero2";
-            this.panelTablero2.Size = new System.Drawing.Size(521, 536);
-            this.panelTablero2.TabIndex = 4;
-            this.panelTablero2.Visible = false;
-            // 
             // btnGuardarFavorito
             // 
             this.btnGuardarFavorito.Location = new System.Drawing.Point(175, 35);
@@ -194,17 +173,6 @@
             this.btnGuardarFavorito.Text = "Guardar Tabla en Favoritos";
             this.btnGuardarFavorito.UseVisualStyleBackColor = true;
             this.btnGuardarFavorito.Click += new System.EventHandler(this.btnGuardarFavorito_Click);
-            // 
-            // btnCargarFavorito
-            // 
-            this.btnCargarFavorito.Location = new System.Drawing.Point(175, 125);
-            this.btnCargarFavorito.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnCargarFavorito.Name = "btnCargarFavorito";
-            this.btnCargarFavorito.Size = new System.Drawing.Size(153, 82);
-            this.btnCargarFavorito.TabIndex = 10;
-            this.btnCargarFavorito.Text = "Cargar Tabla Favorita";
-            this.btnCargarFavorito.UseVisualStyleBackColor = true;
-            this.btnCargarFavorito.Click += new System.EventHandler(this.btnCargarFavorito_Click);
             // 
             // lstHistorial
             // 
@@ -238,10 +206,10 @@
             // cmbTablasFavoritas
             // 
             this.cmbTablasFavoritas.FormattingEnabled = true;
-            this.cmbTablasFavoritas.Location = new System.Drawing.Point(346, 48);
+            this.cmbTablasFavoritas.Location = new System.Drawing.Point(334, 35);
             this.cmbTablasFavoritas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbTablasFavoritas.Name = "cmbTablasFavoritas";
-            this.cmbTablasFavoritas.Size = new System.Drawing.Size(172, 30);
+            this.cmbTablasFavoritas.Size = new System.Drawing.Size(184, 30);
             this.cmbTablasFavoritas.TabIndex = 16;
             // 
             // btnAutomatico
@@ -348,9 +316,9 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1745, 234);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1744, 260);
             this.gbControlesJuego.Name = "gbControlesJuego";
-            this.gbControlesJuego.Size = new System.Drawing.Size(282, 253);
+            this.gbControlesJuego.Size = new System.Drawing.Size(282, 213);
             this.gbControlesJuego.TabIndex = 21;
             this.gbControlesJuego.TabStop = false;
             this.gbControlesJuego.Text = "Controles de juego";
@@ -363,7 +331,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(1744, 516);
+            this.groupBox3.Location = new System.Drawing.Point(1750, 501);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -386,9 +354,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.btnCargarPaquete);
             this.groupBox5.Controls.Add(this.btnPersonalizarTabla);
             this.groupBox5.Controls.Add(this.btnGuardarFavorito);
-            this.groupBox5.Controls.Add(this.btnCargarFavorito);
             this.groupBox5.Controls.Add(this.cmbTablasFavoritas);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(12, 705);
@@ -408,20 +376,12 @@
             this.btnPersonalizarTabla.UseVisualStyleBackColor = true;
             this.btnPersonalizarTabla.Click += new System.EventHandler(this.btnPersonalizarTabla_Click);
             // 
-            // flpTableros
-            // 
-            this.flpTableros.AutoScroll = true;
-            this.flpTableros.Location = new System.Drawing.Point(12, 12);
-            this.flpTableros.Name = "flpTableros";
-            this.flpTableros.Size = new System.Drawing.Size(1284, 654);
-            this.flpTableros.TabIndex = 27;
-            // 
             // btnLoteria
             // 
             this.btnLoteria.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLoteria.Location = new System.Drawing.Point(814, 693);
+            this.btnLoteria.Location = new System.Drawing.Point(632, 705);
             this.btnLoteria.Name = "btnLoteria";
-            this.btnLoteria.Size = new System.Drawing.Size(482, 71);
+            this.btnLoteria.Size = new System.Drawing.Size(670, 91);
             this.btnLoteria.TabIndex = 28;
             this.btnLoteria.Text = "Loteria\r\n";
             this.btnLoteria.UseVisualStyleBackColor = true;
@@ -432,21 +392,38 @@
             this.timerValidacion.Interval = 1000;
             this.timerValidacion.Tick += new System.EventHandler(this.timerValidacion_Tick);
             // 
+            // flpTableros
+            // 
+            this.flpTableros.AutoScroll = true;
+            this.flpTableros.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpTableros.Location = new System.Drawing.Point(18, 13);
+            this.flpTableros.Name = "flpTableros";
+            this.flpTableros.Size = new System.Drawing.Size(1284, 654);
+            this.flpTableros.TabIndex = 27;
+            // 
+            // btnCargarPaquete
+            // 
+            this.btnCargarPaquete.Location = new System.Drawing.Point(175, 124);
+            this.btnCargarPaquete.Name = "btnCargarPaquete";
+            this.btnCargarPaquete.Size = new System.Drawing.Size(153, 77);
+            this.btnCargarPaquete.TabIndex = 18;
+            this.btnCargarPaquete.Text = "Cargar Paquete";
+            this.btnCargarPaquete.UseVisualStyleBackColor = true;
+            this.btnCargarPaquete.Click += new System.EventHandler(this.btnCargarPaquete_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(2036, 1024);
-            this.Controls.Add(this.btnLoteria);
             this.Controls.Add(this.flpTableros);
+            this.Controls.Add(this.btnLoteria);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.gbControlesJuego);
             this.Controls.Add(this.gbConfiguracion);
-            this.Controls.Add(this.panelTablero2);
-            this.Controls.Add(this.panelTablero);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Loteria";
@@ -471,16 +448,13 @@
         private System.Windows.Forms.Button btnIniciar;
         private System.Windows.Forms.Button btnSiguiente;
         private System.Windows.Forms.PictureBox picCartaActual;
-        private System.Windows.Forms.Panel panelTablero;
         private System.Windows.Forms.Timer timerCartas;
         private System.Windows.Forms.TextBox txtIP;
         private System.Windows.Forms.Button btnModoServidor;
         private System.Windows.Forms.Button btnModoCliente;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbModoJuego;
-        private System.Windows.Forms.Panel panelTablero2;
         private System.Windows.Forms.Button btnGuardarFavorito;
-        private System.Windows.Forms.Button btnCargarFavorito;
         private System.Windows.Forms.ListBox lstHistorial;
         private System.Windows.Forms.FlowLayoutPanel flpHistorialImagenes;
         private System.Windows.Forms.Label label2;
@@ -497,9 +471,10 @@
         private System.Windows.Forms.Button btnPersonalizarTabla;
         private System.Windows.Forms.NumericUpDown numCantidadTablas;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.FlowLayoutPanel flpTableros;
         private System.Windows.Forms.Button btnLoteria;
         private System.Windows.Forms.Timer timerValidacion;
+        private System.Windows.Forms.FlowLayoutPanel flpTableros;
+        private System.Windows.Forms.Button btnCargarPaquete;
     }
 }
 
