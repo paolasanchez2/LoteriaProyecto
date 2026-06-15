@@ -857,7 +857,10 @@ namespace LoteriaProyecto
                             pic.Image = Image.FromFile(carta.RutaImagen);
                         }
 
-                        pic.Tag = new Point(f, c);
+                        pic.Tag = new Point(t, f * 5 + c);
+                        pic.Click += PicCasillaDinamica_Click;
+                        pic.Paint += PicCasilla_Paint;
+
 
                         grupoTabla.Controls.Add(pic);
                         casillas[f, c] = pic;
@@ -868,5 +871,56 @@ namespace LoteriaProyecto
                 flpTableros.Controls.Add(grupoTabla);
             }
         }
+
+        private void PicCasillaDinamica_Click(object sender, EventArgs e)
+        {
+            PictureBox picPresionado = (PictureBox)sender;
+            Point datos = (Point)picPresionado.Tag;
+
+            int indiceTabla = datos.X;
+            int posicion = datos.Y;
+
+            int fila = posicion / 5;
+            int col = posicion % 5;
+
+            Tablero tablero = juego.TablerosJugador[indiceTabla];
+            Carta cartaClickeada = tablero.ObtenerCarta(fila, col);
+
+            if (juego.CartaActual != null && cartaClickeada.Id == juego.CartaActual.Id)
+            {
+                tablero.MarcarPosicion(fila, col);
+                juego.ControlSonido.ReproducirEfecto("frijolito");
+
+                picPresionado.AccessibleName = "Marcado";
+                picPresionado.Invalidate();
+
+                if (tablero.VerificarSiGano(cmbModoJuego.Text))
+                {
+                    juego.ControlSonido.ReproducirEfecto("ganar");
+                    juego.TerminarJuego();
+                    timerCartas.Stop();
+                    btnSiguiente.Enabled = false;
+
+                    if (red != null)
+                        red.EnviarMensaje("LOTERIA");
+
+                    MessageBox.Show($"¡¡LOTERÍA!! Ganaste con la Tabla {indiceTabla + 1}.",
+                                    "Victoria",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                juego.ControlSonido.ReproducirEfecto("error");
+
+                string mensajeError = (juego.CartaActual == null)
+                    ? "¡Aún no ha salido ninguna carta del mazo!"
+                    : $"La carta '{cartaClickeada.Nombre}' no ha salido. La actual es '{juego.CartaActual.Nombre}'.";
+
+                MessageBox.Show(mensajeError, "Carta Incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
     }
 }
