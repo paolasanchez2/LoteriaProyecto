@@ -191,5 +191,30 @@ namespace LoteriaProyecto
             return ValidarPatron(puntos.ToArray(), cartasCantadas);
         }
 
+        public bool TieneCartasDuplicadas()
+        {
+            List<int> idsEncontrados = new List<int>();
+
+            for (int f = 0; f < 5; f++)
+            {
+                for (int c = 0; c < 5; c++)
+                {
+                    Carta carta = matrizCartas[f, c];
+
+                    if (carta == null)
+                        continue;
+
+                    if (idsEncontrados.Contains(carta.Id))
+                    {
+                        return true;
+                    }
+
+                    idsEncontrados.Add(carta.Id);
+                }
+            }
+
+            return false;
+        }
+
     }
 }

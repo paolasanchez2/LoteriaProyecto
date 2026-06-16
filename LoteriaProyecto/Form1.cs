@@ -33,6 +33,7 @@ namespace LoteriaProyecto
 
             timerCartas.Tick += timerCartas_Tick;
             combosFavoritosPorTabla = new List<ComboBox>();
+            cmbTipoTabla.SelectedIndex = 0;
 
         }
         private bool ValidarSeleccionDeTablas()
@@ -64,7 +65,7 @@ namespace LoteriaProyecto
 
             juego.IniciarNuevoJuego(cantidadTablas);
             CrearTablerosDinamicos(cantidadTablas);
-
+     
             btnSiguiente.Enabled = true;
             picCartaActual.Image = null;
             flpHistorialImagenes.Controls.Clear();
@@ -73,13 +74,17 @@ namespace LoteriaProyecto
             {
                 string modoSeleccionado = cmbModoJuego.Text;
                 int velocidad = (int)numVelocidad.Value;
+                string tipoTabla = cmbTipoTabla.Text;
 
-                red.EnviarMensaje($"INICIAR_PARTIDA|{modoSeleccionado}|{cantidadTablas}|{velocidad}");
+                red.EnviarMensaje($"INICIAR_PARTIDA|{modoSeleccionado}|{cantidadTablas}|{velocidad}|{tipoTabla}");
             }
         }
 
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
+            if (!ValidarTipoDeTablas())
+                return;
+
             AvanzarJuego();
         }
         private void AvanzarJuego()
@@ -238,6 +243,7 @@ namespace LoteriaProyecto
                     string modoDelServidor = datos[1];
                     string tablasDelServidor = datos[2];
                     int velocidadDelServidor = int.Parse(datos[3]);
+                    string tipoTablaDelServidor = datos[4];
 
                     int cantidadTablasServidor = int.Parse(tablasDelServidor);
 
@@ -247,6 +253,7 @@ namespace LoteriaProyecto
 
                     numVelocidad.Value = velocidadDelServidor;
                     timerCartas.Interval = velocidadDelServidor * 1000;
+                    cmbTipoTabla.Text = tipoTablaDelServidor;
 
                     IniciarTableroCliente();
                 }
@@ -386,6 +393,8 @@ namespace LoteriaProyecto
                 return;
             }
 
+            if (!ValidarTipoDeTablas())
+                return;
 
             timerCartas.Interval = (int)numVelocidad.Value * 1000;
             timerCartas.Start();
@@ -872,6 +881,37 @@ namespace LoteriaProyecto
 
                 btnEnviarChat.PerformClick();
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool ValidarTipoDeTablas()
+        {
+            string tipoTabla = cmbTipoTabla.Text;
+
+            if (tipoTabla == "Cartas dobles permitidas")
+                return true;
+
+            for (int i = 0; i < juego.TablerosJugador.Count; i++)
+            {
+                if (juego.TablerosJugador[i].TieneCartasDuplicadas())
+                {
+                    MessageBox.Show(
+                        $"La Tabla {i + 1} contiene cartas repetidas.\n\n" +
+                        "El modo 'Cartas únicas' no permite cartas duplicadas.\n" +
+                        "Cambia esa tabla o selecciona 'Cartas dobles permitidas'.",
+                        "Tabla no permitida",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

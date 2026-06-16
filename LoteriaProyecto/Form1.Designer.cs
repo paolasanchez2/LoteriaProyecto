@@ -65,6 +65,8 @@
             this.btnEnviarChat = new System.Windows.Forms.Button();
             this.txtMensajeChat = new System.Windows.Forms.TextBox();
             this.txtHistorialChat = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmbTipoTabla = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -204,9 +206,10 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(5, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 22);
+            this.label2.Size = new System.Drawing.Size(137, 22);
             this.label2.TabIndex = 15;
-            this.label2.Text = "Modo de juego";
+            this.label2.Text = "Forma de ganar";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // cmbTablasFavoritas
             // 
@@ -262,6 +265,8 @@
             // 
             // gbConfiguracion
             // 
+            this.gbConfiguracion.Controls.Add(this.cmbTipoTabla);
+            this.gbConfiguracion.Controls.Add(this.label5);
             this.gbConfiguracion.Controls.Add(this.btnCrearModoJuego);
             this.gbConfiguracion.Controls.Add(this.numCantidadTablas);
             this.gbConfiguracion.Controls.Add(this.label4);
@@ -272,7 +277,7 @@
             this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbConfiguracion.Location = new System.Drawing.Point(1678, 13);
             this.gbConfiguracion.Name = "gbConfiguracion";
-            this.gbConfiguracion.Size = new System.Drawing.Size(283, 276);
+            this.gbConfiguracion.Size = new System.Drawing.Size(283, 345);
             this.gbConfiguracion.TabIndex = 20;
             this.gbConfiguracion.TabStop = false;
             this.gbConfiguracion.Text = "Configuración";
@@ -330,7 +335,7 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1680, 304);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1689, 466);
             this.gbControlesJuego.Name = "gbControlesJuego";
             this.gbControlesJuego.Size = new System.Drawing.Size(282, 213);
             this.gbControlesJuego.TabIndex = 21;
@@ -345,7 +350,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(1682, 537);
+            this.groupBox3.Location = new System.Drawing.Point(1689, 721);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -465,6 +470,28 @@
             this.txtHistorialChat.Size = new System.Drawing.Size(658, 88);
             this.txtHistorialChat.TabIndex = 0;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 264);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(128, 22);
+            this.label5.TabIndex = 30;
+            this.label5.Text = "Modo de juego";
+            // 
+            // cmbTipoTabla
+            // 
+            this.cmbTipoTabla.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTipoTabla.FormattingEnabled = true;
+            this.cmbTipoTabla.Items.AddRange(new object[] {
+            "Cartas únicas",
+            "",
+            "Cartas dobles permitidas"});
+            this.cmbTipoTabla.Location = new System.Drawing.Point(6, 289);
+            this.cmbTipoTabla.Name = "cmbTipoTabla";
+            this.cmbTipoTabla.Size = new System.Drawing.Size(156, 30);
+            this.cmbTipoTabla.TabIndex = 31;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -537,6 +564,8 @@
         private System.Windows.Forms.TextBox txtMensajeChat;
         private System.Windows.Forms.TextBox txtHistorialChat;
         private System.Windows.Forms.Button btnEnviarChat;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cmbTipoTabla;
     }
 }
 
