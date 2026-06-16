@@ -108,7 +108,7 @@
             this.picCartaActual.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picCartaActual.TabIndex = 2;
             this.picCartaActual.TabStop = false;
-            this.picCartaActual.Click += new System.EventHandler(this.picCartaActual_Click);
+            
             // 
             // timerCartas
             // 
@@ -314,7 +314,7 @@
             this.label4.Size = new System.Drawing.Size(160, 22);
             this.label4.TabIndex = 28;
             this.label4.Text = "Cantidad de tablas";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            
             // 
             // label3
             // 
@@ -324,7 +324,7 @@
             this.label3.Size = new System.Drawing.Size(165, 22);
             this.label3.TabIndex = 20;
             this.label3.Text = "Velocidad por carta";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            
             // 
             // gbControlesJuego
             // 
@@ -456,6 +456,7 @@
             this.txtMensajeChat.Name = "txtMensajeChat";
             this.txtMensajeChat.Size = new System.Drawing.Size(314, 26);
             this.txtMensajeChat.TabIndex = 1;
+            this.txtMensajeChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMensajeChat_KeyDown);
             // 
             // btnEnviarChat
             // 

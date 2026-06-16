@@ -76,114 +76,11 @@ namespace LoteriaProyecto
         }
 
         // Lógica de escaneo de gane en 4x4
-        public bool VerificarLineasTradicionales()
-        {
-            // 1. Validar Filas
-            for (int f = 0; f < 5; f++)
-            {
-                if (matrizMarcados[f, 0] && matrizMarcados[f, 1] && matrizMarcados[f, 2] && matrizMarcados[f, 3] && matrizMarcados[f,4])
-                    return true;
-            }
-
-            // 2. Validar Columnas
-            for (int c = 0; c < 5; c++)
-            {
-                if (matrizMarcados[0, c] && matrizMarcados[1, c] && matrizMarcados[2, c] && matrizMarcados[3, c] && matrizMarcados[4,c])
-                    return true;
-            }
-
-            // 3. Diagonal de izquierda a derecha
-            if (matrizMarcados[0, 0] && matrizMarcados[1, 1] && matrizMarcados[2, 2] && matrizMarcados[3, 3] && matrizMarcados[4,4])
-                return true;
-
-            // 4. Diagonal de derecha a izquierda
-            if (matrizMarcados[0, 4] && matrizMarcados[1, 3] && matrizMarcados[2, 2] && matrizMarcados[3, 1] && matrizMarcados[4,0])
-                return true;
-
-            return false;
-        }
-        public bool VerificarSiGano(string modoJuego)
-        {
-            switch (modoJuego)
-            {
-                case "Tabla Llena":
-                    for (int f = 0; f < 5; f++)
-                        for (int c = 0; c < 5; c++)
-                            if (!matrizMarcados[f, c]) return false;
-                    return true;
-
-                case "Cuatro Esquinas":
-                    return matrizMarcados[0, 0] && matrizMarcados[0, 4] &&
-                           matrizMarcados[4, 0] && matrizMarcados[4, 4];
-
-                case "En L":
-                    return matrizMarcados[0, 0] && matrizMarcados[1, 0] &&
-                           matrizMarcados[2, 0] && matrizMarcados[3, 0] &&
-                           matrizMarcados[4, 0] && matrizMarcados[4, 1] &&
-                           matrizMarcados[4, 2] && matrizMarcados[4, 3] &&
-                           matrizMarcados[4, 4];
-
-                case "Tradicional (Línea de 4: Horizontal, Vertical, Diagonal)":
-                    return VerificarLineasTradicionales();
-
-                default:
-                    return VerificarModoPersonalizado(modoJuego);
-            }
-        }
-
-        
+ 
         public void AsignarCartaEnPosicion(int fila, int col, Carta nuevaCarta)
         {
             matrizCartas[fila, col] = nuevaCarta;
             matrizMarcados[fila, col] = false; 
-        }
-
-        public bool ValidarCartasMarcadasCantadas(List<int> cartasCantadas)
-        {
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    if (matrizMarcados[f, c])
-                    {
-                        Carta carta = ObtenerCarta(f, c);
-
-                        if (!cartasCantadas.Contains(carta.Id))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool VerificarModoPersonalizado(string nombreModo)
-        {
-            string ruta = System.IO.Path.Combine(
-                "ModosPersonalizados",
-                nombreModo + ".txt");
-
-            if (!System.IO.File.Exists(ruta))
-                return false;
-
-            string[] lineas = System.IO.File.ReadAllLines(ruta);
-
-            foreach (string linea in lineas)
-            {
-                string[] datos = linea.Split(',');
-
-                int f = int.Parse(datos[0]);
-                int c = int.Parse(datos[1]);
-
-                if (!matrizMarcados[f, c])
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public bool VerificarVictoriaValida(string modoJuego, List<int> cartasCantadas)

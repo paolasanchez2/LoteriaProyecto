@@ -35,22 +35,6 @@ namespace LoteriaProyecto
             CartasCantadasIds = new List<int>();
         }
 
-        public void IniciarNuevoJuego()
-        {
-            MazoPrincipal.Barajar();
-
-            TableroJugador = new Tablero();
-            // 3. LE PASAMOS EL RANDOM GLOBAL AL TABLERO 1
-            TableroJugador.GenerarTableroAleatorio(MazoPrincipal, rndGlobal);
-
-            TableroJugador2 = new Tablero();
-            // 4. LE PASAMOS EL MISMO RANDOM GLOBAL AL TABLERO 2
-            TableroJugador2.GenerarTableroAleatorio(MazoPrincipal, rndGlobal);
-
-            EnCurso = true;
-            CartaActual = null;
-        }
-
         public Carta CantarSiguienteCarta()
         {
             if (!EnCurso) return null;
@@ -77,7 +61,7 @@ namespace LoteriaProyecto
         public void TerminarJuego()
         {
             EnCurso = false;
-            indicePersonalizar = 0; // <-- Opcional: Resetea el carrusel de edición para la siguiente ronda
+           
         }
         // Así debe quedar dentro de JuegoManager.cs
         public void SincronizarCartaPorId(int id)
@@ -120,19 +104,7 @@ namespace LoteriaProyecto
             // Busca la carta basándose en el ID recorriendo el mazo o la lista base
             return MazoPrincipal.ObtenerListaCompleta().FirstOrDefault(c => c.Id == id);
         }
-        public Carta ObtenerSiguienteCartaParaPersonalizar()
-        {
-            List<Carta> todas = MazoPrincipal.ObtenerListaCompleta();
-            if (todas.Count == 0) return null;
-
-            Carta seleccionada = todas[indicePersonalizar];
-
-            // Rotar el índice para la próxima casilla que se presione
-            indicePersonalizar = (indicePersonalizar + 1) % todas.Count;
-
-            return seleccionada;
-        }
-
+        
         public void IniciarNuevoJuego(int cantidadTablas)
         {
             MazoPrincipal.Barajar();

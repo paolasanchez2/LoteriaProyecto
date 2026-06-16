@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace LoteriaProyecto
 {
@@ -17,8 +11,8 @@ namespace LoteriaProyecto
         private List<PictureBox[,]> listaCasillasVisuales;
         private JuegoManager juego;
 
-        
-       
+
+
 
         private RedManager red;
         private bool soyServidor = false;
@@ -31,9 +25,9 @@ namespace LoteriaProyecto
         {
             InitializeComponent();
             juego = new JuegoManager();
-            
+
             listaCasillasVisuales = new List<PictureBox[,]>();
-           
+
             red = new RedManager();
             red.MensajeRecibido += ProcesarMensajeRed;
 
@@ -131,11 +125,6 @@ namespace LoteriaProyecto
             AvanzarJuego();
         }
 
-        private void picCartaActual_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void PicCasilla_Paint(object sender, PaintEventArgs e)
         {
             PictureBox pic = (PictureBox)sender;
@@ -190,7 +179,7 @@ namespace LoteriaProyecto
 
         private void ProcesarMensajeRed(string mensaje)
         {
-            
+
             this.Invoke((MethodInvoker)delegate
             {
 
@@ -241,7 +230,7 @@ namespace LoteriaProyecto
 
                     return;
                 }
-             
+
                 if (mensaje.StartsWith("INICIAR_PARTIDA|"))
                 {
                     string[] datos = mensaje.Split('|');
@@ -254,7 +243,7 @@ namespace LoteriaProyecto
 
                     cmbModoJuego.Text = modoDelServidor;
 
-                    numCantidadTablas.Value = cantidadTablasServidor;              
+                    numCantidadTablas.Value = cantidadTablasServidor;
 
                     numVelocidad.Value = velocidadDelServidor;
                     timerCartas.Interval = velocidadDelServidor * 1000;
@@ -361,10 +350,7 @@ namespace LoteriaProyecto
                 cmbTablasFavoritas.SelectedIndex = 0;
             }
         }
-       
-      
 
-      
         private void AgregarAlHistorialVisual(Carta carta)
         {
             if (carta == null) return;
@@ -390,7 +376,7 @@ namespace LoteriaProyecto
             flpHistorialImagenes.Controls.SetChildIndex(picHistorial, 0);
         }
 
-        
+
 
         private void btnAutomatico_Click(object sender, EventArgs e)
         {
@@ -414,19 +400,7 @@ namespace LoteriaProyecto
         {
             timerCartas.Interval = (int)numVelocidad.Value * 1000;
         }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cmbCartasPersonalizar_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
+   
         private void btnPersonalizarTabla_Click(object sender, EventArgs e)
         {
             FormPersonalizacion ventana = new FormPersonalizacion();
@@ -434,11 +408,6 @@ namespace LoteriaProyecto
 
             ActualizarListaFavoritos();
             ActualizarCombosFavoritosPorTabla();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void CrearTablerosDinamicos(int cantidadTablas)
@@ -893,6 +862,16 @@ namespace LoteriaProyecto
 
             txtMensajeChat.Clear();
             txtMensajeChat.Focus();
+        }
+
+        private void txtMensajeChat_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Evita el sonido "ding"
+
+                btnEnviarChat.PerformClick();
+            }
         }
     }
 }
