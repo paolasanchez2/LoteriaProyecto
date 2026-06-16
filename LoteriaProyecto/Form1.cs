@@ -60,6 +60,7 @@ namespace LoteriaProyecto
             lstHistorial.Visible = false;
             ActualizarListaFavoritos();
             this.WindowState = FormWindowState.Maximized;
+            CargarModosPersonalizados();
 
         }
 
@@ -778,5 +779,48 @@ namespace LoteriaProyecto
                 MessageBox.Show("Error al cargar paquete: " + ex.Message);
             }
         }
+
+        private void btnCrearModoJuego_Click(object sender, EventArgs e)
+        {
+            FormModoJuego ventana = new FormModoJuego();
+
+            if (ventana.ShowDialog() == DialogResult.OK)
+            {
+                CargarModosPersonalizados();
+            }
+        }
+
+        private void CargarModosPersonalizados()
+        {
+            cmbModoJuego.Items.Clear();
+
+            cmbModoJuego.Items.Add("Tradicional (Horizontal, Vertical, Diagonal)");
+            cmbModoJuego.Items.Add("Tabla Llena");
+            cmbModoJuego.Items.Add("En L");
+            cmbModoJuego.Items.Add("Cuatro Esquinas");
+
+            string carpeta = "ModosPersonalizados";
+
+            if (System.IO.Directory.Exists(carpeta))
+            {
+                string[] archivos = System.IO.Directory.GetFiles(carpeta, "*.txt");
+
+                foreach (string archivo in archivos)
+                {
+                    string nombreModo = System.IO.Path.GetFileNameWithoutExtension(archivo);
+
+                    if (!cmbModoJuego.Items.Contains(nombreModo))
+                    {
+                        cmbModoJuego.Items.Add(nombreModo);
+                    }
+                }
+            }
+
+            if (cmbModoJuego.Items.Count > 0)
+            {
+                cmbModoJuego.SelectedIndex = 0;
+            }
+        }
+
     }
 }

@@ -60,6 +60,7 @@
             this.timerValidacion = new System.Windows.Forms.Timer(this.components);
             this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
             this.btnCargarPaquete = new System.Windows.Forms.Button();
+            this.btnCrearModoJuego = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -73,7 +74,7 @@
             // 
             // btnIniciar
             // 
-            this.btnIniciar.Location = new System.Drawing.Point(6, 41);
+            this.btnIniciar.Location = new System.Drawing.Point(9, 41);
             this.btnIniciar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(224, 34);
@@ -84,7 +85,7 @@
             // 
             // btnSiguiente
             // 
-            this.btnSiguiente.Location = new System.Drawing.Point(6, 79);
+            this.btnSiguiente.Location = new System.Drawing.Point(9, 79);
             this.btnSiguiente.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSiguiente.Name = "btnSiguiente";
             this.btnSiguiente.Size = new System.Drawing.Size(224, 35);
@@ -214,7 +215,7 @@
             // 
             // btnAutomatico
             // 
-            this.btnAutomatico.Location = new System.Drawing.Point(6, 116);
+            this.btnAutomatico.Location = new System.Drawing.Point(9, 116);
             this.btnAutomatico.Name = "btnAutomatico";
             this.btnAutomatico.Size = new System.Drawing.Size(224, 37);
             this.btnAutomatico.TabIndex = 17;
@@ -224,7 +225,7 @@
             // 
             // btnDetenerAutomatico
             // 
-            this.btnDetenerAutomatico.Location = new System.Drawing.Point(6, 156);
+            this.btnDetenerAutomatico.Location = new System.Drawing.Point(9, 156);
             this.btnDetenerAutomatico.Name = "btnDetenerAutomatico";
             this.btnDetenerAutomatico.Size = new System.Drawing.Size(224, 38);
             this.btnDetenerAutomatico.TabIndex = 18;
@@ -234,7 +235,7 @@
             // 
             // numVelocidad
             // 
-            this.numVelocidad.Location = new System.Drawing.Point(11, 176);
+            this.numVelocidad.Location = new System.Drawing.Point(6, 229);
             this.numVelocidad.Maximum = new decimal(new int[] {
             10,
             0,
@@ -257,6 +258,7 @@
             // 
             // gbConfiguracion
             // 
+            this.gbConfiguracion.Controls.Add(this.btnCrearModoJuego);
             this.gbConfiguracion.Controls.Add(this.numCantidadTablas);
             this.gbConfiguracion.Controls.Add(this.label4);
             this.gbConfiguracion.Controls.Add(this.label3);
@@ -266,14 +268,14 @@
             this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbConfiguracion.Location = new System.Drawing.Point(1744, 13);
             this.gbConfiguracion.Name = "gbConfiguracion";
-            this.gbConfiguracion.Size = new System.Drawing.Size(283, 215);
+            this.gbConfiguracion.Size = new System.Drawing.Size(283, 276);
             this.gbConfiguracion.TabIndex = 20;
             this.gbConfiguracion.TabStop = false;
             this.gbConfiguracion.Text = "Configuración";
             // 
             // numCantidadTablas
             // 
-            this.numCantidadTablas.Location = new System.Drawing.Point(9, 109);
+            this.numCantidadTablas.Location = new System.Drawing.Point(6, 173);
             this.numCantidadTablas.Minimum = new decimal(new int[] {
             1,
             0,
@@ -292,7 +294,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(5, 84);
+            this.label4.Location = new System.Drawing.Point(2, 138);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(160, 22);
             this.label4.TabIndex = 28;
@@ -302,7 +304,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 151);
+            this.label3.Location = new System.Drawing.Point(2, 204);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(165, 22);
             this.label3.TabIndex = 20;
@@ -316,7 +318,7 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1744, 260);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1750, 344);
             this.gbControlesJuego.Name = "gbControlesJuego";
             this.gbControlesJuego.Size = new System.Drawing.Size(282, 213);
             this.gbControlesJuego.TabIndex = 21;
@@ -331,7 +333,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(1750, 501);
+            this.groupBox3.Location = new System.Drawing.Point(1750, 574);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -411,6 +413,16 @@
             this.btnCargarPaquete.UseVisualStyleBackColor = true;
             this.btnCargarPaquete.Click += new System.EventHandler(this.btnCargarPaquete_Click);
             // 
+            // btnCrearModoJuego
+            // 
+            this.btnCrearModoJuego.Location = new System.Drawing.Point(6, 96);
+            this.btnCrearModoJuego.Name = "btnCrearModoJuego";
+            this.btnCrearModoJuego.Size = new System.Drawing.Size(224, 39);
+            this.btnCrearModoJuego.TabIndex = 29;
+            this.btnCrearModoJuego.Text = "Crear forma de ganar";
+            this.btnCrearModoJuego.UseVisualStyleBackColor = true;
+            this.btnCrearModoJuego.Click += new System.EventHandler(this.btnCrearModoJuego_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -475,6 +487,7 @@
         private System.Windows.Forms.Timer timerValidacion;
         private System.Windows.Forms.FlowLayoutPanel flpTableros;
         private System.Windows.Forms.Button btnCargarPaquete;
+        private System.Windows.Forms.Button btnCrearModoJuego;
     }
 }
 

@@ -106,7 +106,6 @@ namespace LoteriaProyecto
             switch (modoJuego)
             {
                 case "Tabla Llena":
-                    // Recorre toda la matriz; si encuentra un false, no ha ganado
                     for (int f = 0; f < 5; f++)
                         for (int c = 0; c < 5; c++)
                             if (!matrizMarcados[f, c]) return false;
@@ -117,20 +116,25 @@ namespace LoteriaProyecto
                            matrizMarcados[4, 0] && matrizMarcados[4, 4];
 
                 case "En L":
-                    // Ejemplo básico de L (columna 0 completa + fila 3 completa)
-                    return (matrizMarcados[0, 0] && matrizMarcados[1, 0] && matrizMarcados[2, 0] && matrizMarcados[3, 0] &&
-                            matrizMarcados[4, 0] && matrizMarcados[4, 1] && matrizMarcados[4, 2] && matrizMarcados[4,3] && matrizMarcados[4,4]);
+                    return matrizMarcados[0, 0] && matrizMarcados[1, 0] &&
+                           matrizMarcados[2, 0] && matrizMarcados[3, 0] &&
+                           matrizMarcados[4, 0] && matrizMarcados[4, 1] &&
+                           matrizMarcados[4, 2] && matrizMarcados[4, 3] &&
+                           matrizMarcados[4, 4];
 
-                default: // Tradicional (El algoritmo que ya tienes de filas, columnas y diagonales)
-                         // Aquí pegas tu lógica actual de escaneo por líneas de 4
+                case "Tradicional (Línea de 4: Horizontal, Vertical, Diagonal)":
                     return VerificarLineasTradicionales();
+
+                default:
+                    return VerificarModoPersonalizado(modoJuego);
             }
         }
-        // Añade esto para poder cargar tus tablas favoritas después
+
+        
         public void AsignarCartaEnPosicion(int fila, int col, Carta nuevaCarta)
         {
             matrizCartas[fila, col] = nuevaCarta;
-            matrizMarcados[fila, col] = false; // Nos aseguramos de que empiece sin frijolito
+            matrizMarcados[fila, col] = false; 
         }
 
         public bool ValidarCartasMarcadasCantadas(List<int> cartasCantadas)
@@ -154,7 +158,32 @@ namespace LoteriaProyecto
             return true;
         }
 
+        private bool VerificarModoPersonalizado(string nombreModo)
+        {
+            string ruta = System.IO.Path.Combine(
+                "ModosPersonalizados",
+                nombreModo + ".txt");
 
+            if (!System.IO.File.Exists(ruta))
+                return false;
+
+            string[] lineas = System.IO.File.ReadAllLines(ruta);
+
+            foreach (string linea in lineas)
+            {
+                string[] datos = linea.Split(',');
+
+                int f = int.Parse(datos[0]);
+                int c = int.Parse(datos[1]);
+
+                if (!matrizMarcados[f, c])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
     }
 }
