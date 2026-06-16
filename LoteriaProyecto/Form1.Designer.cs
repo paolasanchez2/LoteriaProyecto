@@ -485,7 +485,7 @@
             this.cmbTipoTabla.FormattingEnabled = true;
             this.cmbTipoTabla.Items.AddRange(new object[] {
             "Cartas únicas",
-            "Cartas dobles"});
+            "Cartas dobles permitidas"});
             this.cmbTipoTabla.Location = new System.Drawing.Point(6, 289);
             this.cmbTipoTabla.Name = "cmbTipoTabla";
             this.cmbTipoTabla.Size = new System.Drawing.Size(266, 30);
