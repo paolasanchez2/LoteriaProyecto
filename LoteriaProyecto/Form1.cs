@@ -193,16 +193,28 @@ namespace LoteriaProyecto
             
             this.Invoke((MethodInvoker)delegate
             {
-               
+
+                if (mensaje.StartsWith("CHAT|"))
+                {
+                    string[] datos = mensaje.Split('|');
+
+                    string nombre = datos[1];
+                    string texto = datos[2];
+
+                    txtHistorialChat.AppendText($"{nombre}: {texto}{Environment.NewLine}");
+
+                    return;
+                }
+
                 if (mensaje.StartsWith("CARTA:"))
                 {
                     int idCarta = int.Parse(mensaje.Split(':')[1]);
 
-                    
+
                     juego.SincronizarCartaPorId(idCarta);
-                    AgregarAlHistorialVisual(juego.CartaActual); 
+                    AgregarAlHistorialVisual(juego.CartaActual);
                     lstHistorial.Items.Insert(0, $"{idCarta} - {juego.CartaActual.Nombre}");
-           
+
                     try
                     {
                         string rutaCarpeta = "imagenes";
@@ -217,17 +229,19 @@ namespace LoteriaProyecto
                     }
                     catch (Exception) { /* Ignorar si hay problemas de carga visual */ }
                 }
-                
-                if (mensaje == "LOTERIA")
+
+                if (mensaje.StartsWith("RECLAMO_LOTERIA|"))
                 {
-                    juego.TerminarJuego();
-                    timerCartas.Stop();
-                    btnSiguiente.Enabled = false;
-                    MessageBox.Show("¡El otro jugador ha cantado LOTERÍA! Suerte para la próxima.", "Fin del Juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string jugador = mensaje.Split('|')[1];
+
+                    if (soyServidor)
+                    {
+                        RegistrarReclamoLoteria(jugador);
+                    }
+
+                    return;
                 }
-                
-                
-                
+             
                 if (mensaje.StartsWith("INICIAR_PARTIDA|"))
                 {
                     string[] datos = mensaje.Split('|');
@@ -538,14 +552,9 @@ namespace LoteriaProyecto
 
             foreach (Tablero tablero in juego.TablerosJugador)
             {
-                bool figuraCorrecta =
-                    tablero.VerificarSiGano(cmbModoJuego.Text);
-
-                bool cartasValidas =
-                    tablero.ValidarCartasMarcadasCantadas(
-                        juego.CartasCantadasIds);
-
-                if (figuraCorrecta && cartasValidas)
+                if (tablero.VerificarVictoriaValida(
+                        cmbModoJuego.Text,
+                        juego.CartasCantadasIds))
                 {
                     hayGanador = true;
                     break;
@@ -563,28 +572,19 @@ namespace LoteriaProyecto
                 return;
             }
 
-            if (!validacionAbierta)
+            string jugador = soyServidor ? "Servidor" : "Cliente";
+
+            if (soyServidor)
             {
-                validacionAbierta = true;
-
-                reclamantes.Clear();
-
-                reclamantes.Add(
-                    soyServidor ? "Servidor" : "Cliente");
-
-
-                timerValidacion.Stop();
-                timerValidacion.Interval = 10000;
-                timerValidacion.Start();
-
-                MessageBox.Show(
-                    "Lotería válida detectada.\n" +
-                    "Esperando 10 segundos por otros jugadores...");
+                RegistrarReclamoLoteria(jugador);
             }
             else
             {
-                reclamantes.Add(
-                    soyServidor ? "Servidor" : "Cliente");
+                red.EnviarMensaje("RECLAMO_LOTERIA|" + jugador);
+
+                MessageBox.Show(
+                    "Lotería válida enviada al servidor.\n" +
+                    "Esperando resultado...");
             }
         }
 
@@ -593,9 +593,18 @@ namespace LoteriaProyecto
             timerValidacion.Stop();
             validacionAbierta = false;
 
-            string ganador = reclamantes.Count > 0 ? reclamantes[0] : "Sin ganador";
-
-            MessageBox.Show("Fin de validación.\nGanador: " + ganador);
+            if (reclamantes.Count == 0)
+            {
+                MessageBox.Show("Fin de validación.\nSin ganador.");
+            }
+            else if (reclamantes.Count == 1)
+            {
+                MessageBox.Show("Fin de validación.\nGanador: " + reclamantes[0]);
+            }
+            else
+            {
+                ResolverEmpateCartaMayor();
+            }
 
             juego.TerminarJuego();
             timerCartas.Stop();
@@ -822,5 +831,68 @@ namespace LoteriaProyecto
             }
         }
 
+        private void ResolverEmpateCartaMayor()
+        {
+            Random rnd = new Random();
+
+            string ganador = "";
+            int cartaMayor = -1;
+            string resultado = "Empate detectado.\nDesempate por carta mayor:\n\n";
+
+            foreach (string jugador in reclamantes)
+            {
+                Carta carta = juego.MazoPrincipal.ObtenerListaCompleta()
+                    [rnd.Next(juego.MazoPrincipal.ObtenerListaCompleta().Count)];
+
+                resultado += $"{jugador}: {carta.Nombre} ({carta.Id})\n";
+
+                if (carta.Id > cartaMayor)
+                {
+                    cartaMayor = carta.Id;
+                    ganador = jugador;
+                }
+            }
+
+            resultado += $"\nGanador por carta mayor: {ganador}";
+
+            MessageBox.Show(resultado, "Desempate", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void RegistrarReclamoLoteria(string jugador)
+        {
+            if (!reclamantes.Contains(jugador))
+            {
+                reclamantes.Add(jugador);
+            }
+
+            if (!validacionAbierta)
+            {
+                validacionAbierta = true;
+
+                timerValidacion.Stop();
+                timerValidacion.Interval = 10000;
+                timerValidacion.Start();
+
+                MessageBox.Show(
+                    "Lotería válida detectada.\n" +
+                    "Esperando 10 segundos por otros jugadores...");
+            }
+        }
+
+        private void btnEnviarChat_Click(object sender, EventArgs e)
+        {
+            string mensaje = txtMensajeChat.Text.Trim();
+
+            if (mensaje == "")
+                return;
+
+            string nombre = soyServidor ? "Servidor" : "Cliente";
+
+            txtHistorialChat.AppendText($"{nombre}: {mensaje}{Environment.NewLine}");
+
+            red.EnviarMensaje($"CHAT|{nombre}|{mensaje}");
+
+            txtMensajeChat.Clear();
+            txtMensajeChat.Focus();
+        }
     }
 }

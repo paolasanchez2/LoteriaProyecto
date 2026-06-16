@@ -81,9 +81,7 @@ namespace LoteriaProyecto
 
         private void btnGuardarModo_Click(object sender, EventArgs e)
         {
-            
-            
-            
+  
             if (string.IsNullOrWhiteSpace(txtNombreModo.Text))
             {
                 MessageBox.Show("Escribe un nombre.");

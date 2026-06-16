@@ -82,29 +82,17 @@ namespace LoteriaProyecto
         // Así debe quedar dentro de JuegoManager.cs
         public void SincronizarCartaPorId(int id)
         {
-            // 1. Buscar en el primer tablero
-            for (int f = 0; f < 5; f++)
-            {
-                for (int c = 0; c < 5; c++)
-                {
-                    Carta car = TableroJugador.ObtenerCarta(f, c);
-                    if (car != null && car.Id == id)
-                    {
-                        CartaActual = car;
-                        ControlSonido.CantarCarta(CartaActual.Nombre);
-                        return;
-                    }
-                }
-            }
+            if (!CartasCantadasIds.Contains(id))
+                CartasCantadasIds.Add(id);
 
-            // 2. Si no la halló, buscar en el segundo tablero
-            if (TableroJugador2 != null)
+            foreach (Tablero tablero in TablerosJugador)
             {
                 for (int f = 0; f < 5; f++)
                 {
                     for (int c = 0; c < 5; c++)
                     {
-                        Carta car = TableroJugador2.ObtenerCarta(f, c);
+                        Carta car = tablero.ObtenerCarta(f, c);
+
                         if (car != null && car.Id == id)
                         {
                             CartaActual = car;
@@ -115,8 +103,17 @@ namespace LoteriaProyecto
                 }
             }
 
-            // 3. Si no la tiene en ningún tablero, objeto genérico
-            CartaActual = new Carta(id, "Carta Externa", "", "");
+            Carta cartaGlobal = BuscarCartaPorIdGlobal(id);
+
+            if (cartaGlobal != null)
+            {
+                CartaActual = cartaGlobal;
+                ControlSonido.CantarCarta(CartaActual.Nombre);
+            }
+            else
+            {
+                CartaActual = new Carta(id, "Carta Externa", "", "");
+            }
         }
         public Carta BuscarCartaPorIdGlobal(int id)
         {

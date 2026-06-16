@@ -48,6 +48,7 @@
             this.btnDetenerAutomatico = new System.Windows.Forms.Button();
             this.numVelocidad = new System.Windows.Forms.NumericUpDown();
             this.gbConfiguracion = new System.Windows.Forms.GroupBox();
+            this.btnCrearModoJuego = new System.Windows.Forms.Button();
             this.numCantidadTablas = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,12 +56,15 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnCargarPaquete = new System.Windows.Forms.Button();
             this.btnPersonalizarTabla = new System.Windows.Forms.Button();
             this.btnLoteria = new System.Windows.Forms.Button();
             this.timerValidacion = new System.Windows.Forms.Timer(this.components);
             this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnCargarPaquete = new System.Windows.Forms.Button();
-            this.btnCrearModoJuego = new System.Windows.Forms.Button();
+            this.gbChat = new System.Windows.Forms.GroupBox();
+            this.txtHistorialChat = new System.Windows.Forms.TextBox();
+            this.txtMensajeChat = new System.Windows.Forms.TextBox();
+            this.btnEnviarChat = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -70,6 +74,7 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.gbChat.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnIniciar
@@ -273,6 +278,16 @@
             this.gbConfiguracion.TabStop = false;
             this.gbConfiguracion.Text = "Configuración";
             // 
+            // btnCrearModoJuego
+            // 
+            this.btnCrearModoJuego.Location = new System.Drawing.Point(6, 96);
+            this.btnCrearModoJuego.Name = "btnCrearModoJuego";
+            this.btnCrearModoJuego.Size = new System.Drawing.Size(224, 39);
+            this.btnCrearModoJuego.TabIndex = 29;
+            this.btnCrearModoJuego.Text = "Crear forma de ganar";
+            this.btnCrearModoJuego.UseVisualStyleBackColor = true;
+            this.btnCrearModoJuego.Click += new System.EventHandler(this.btnCrearModoJuego_Click);
+            // 
             // numCantidadTablas
             // 
             this.numCantidadTablas.Location = new System.Drawing.Point(6, 173);
@@ -368,6 +383,16 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Tablas favoritas";
             // 
+            // btnCargarPaquete
+            // 
+            this.btnCargarPaquete.Location = new System.Drawing.Point(175, 124);
+            this.btnCargarPaquete.Name = "btnCargarPaquete";
+            this.btnCargarPaquete.Size = new System.Drawing.Size(153, 77);
+            this.btnCargarPaquete.TabIndex = 18;
+            this.btnCargarPaquete.Text = "Cargar Paquete";
+            this.btnCargarPaquete.UseVisualStyleBackColor = true;
+            this.btnCargarPaquete.Click += new System.EventHandler(this.btnCargarPaquete_Click);
+            // 
             // btnPersonalizarTabla
             // 
             this.btnPersonalizarTabla.Location = new System.Drawing.Point(6, 35);
@@ -403,25 +428,44 @@
             this.flpTableros.Size = new System.Drawing.Size(1284, 654);
             this.flpTableros.TabIndex = 27;
             // 
-            // btnCargarPaquete
+            // gbChat
             // 
-            this.btnCargarPaquete.Location = new System.Drawing.Point(175, 124);
-            this.btnCargarPaquete.Name = "btnCargarPaquete";
-            this.btnCargarPaquete.Size = new System.Drawing.Size(153, 77);
-            this.btnCargarPaquete.TabIndex = 18;
-            this.btnCargarPaquete.Text = "Cargar Paquete";
-            this.btnCargarPaquete.UseVisualStyleBackColor = true;
-            this.btnCargarPaquete.Click += new System.EventHandler(this.btnCargarPaquete_Click);
+            this.gbChat.Controls.Add(this.btnEnviarChat);
+            this.gbChat.Controls.Add(this.txtMensajeChat);
+            this.gbChat.Controls.Add(this.txtHistorialChat);
+            this.gbChat.Location = new System.Drawing.Point(632, 823);
+            this.gbChat.Name = "gbChat";
+            this.gbChat.Size = new System.Drawing.Size(670, 153);
+            this.gbChat.TabIndex = 29;
+            this.gbChat.TabStop = false;
+            this.gbChat.Text = "Chat";
             // 
-            // btnCrearModoJuego
+            // txtHistorialChat
             // 
-            this.btnCrearModoJuego.Location = new System.Drawing.Point(6, 96);
-            this.btnCrearModoJuego.Name = "btnCrearModoJuego";
-            this.btnCrearModoJuego.Size = new System.Drawing.Size(224, 39);
-            this.btnCrearModoJuego.TabIndex = 29;
-            this.btnCrearModoJuego.Text = "Crear forma de ganar";
-            this.btnCrearModoJuego.UseVisualStyleBackColor = true;
-            this.btnCrearModoJuego.Click += new System.EventHandler(this.btnCrearModoJuego_Click);
+            this.txtHistorialChat.Location = new System.Drawing.Point(6, 25);
+            this.txtHistorialChat.Multiline = true;
+            this.txtHistorialChat.Name = "txtHistorialChat";
+            this.txtHistorialChat.ReadOnly = true;
+            this.txtHistorialChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtHistorialChat.Size = new System.Drawing.Size(658, 88);
+            this.txtHistorialChat.TabIndex = 0;
+            // 
+            // txtMensajeChat
+            // 
+            this.txtMensajeChat.Location = new System.Drawing.Point(7, 120);
+            this.txtMensajeChat.Name = "txtMensajeChat";
+            this.txtMensajeChat.Size = new System.Drawing.Size(314, 26);
+            this.txtMensajeChat.TabIndex = 1;
+            // 
+            // btnEnviarChat
+            // 
+            this.btnEnviarChat.Location = new System.Drawing.Point(561, 120);
+            this.btnEnviarChat.Name = "btnEnviarChat";
+            this.btnEnviarChat.Size = new System.Drawing.Size(103, 27);
+            this.btnEnviarChat.TabIndex = 2;
+            this.btnEnviarChat.Text = "Enviar";
+            this.btnEnviarChat.UseVisualStyleBackColor = true;
+            this.btnEnviarChat.Click += new System.EventHandler(this.btnEnviarChat_Click);
             // 
             // Form1
             // 
@@ -429,6 +473,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(2036, 1024);
+            this.Controls.Add(this.gbChat);
             this.Controls.Add(this.flpTableros);
             this.Controls.Add(this.btnLoteria);
             this.Controls.Add(this.groupBox5);
@@ -451,6 +496,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
+            this.gbChat.ResumeLayout(false);
+            this.gbChat.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -488,6 +535,10 @@
         private System.Windows.Forms.FlowLayoutPanel flpTableros;
         private System.Windows.Forms.Button btnCargarPaquete;
         private System.Windows.Forms.Button btnCrearModoJuego;
+        private System.Windows.Forms.GroupBox gbChat;
+        private System.Windows.Forms.TextBox txtMensajeChat;
+        private System.Windows.Forms.TextBox txtHistorialChat;
+        private System.Windows.Forms.Button btnEnviarChat;
     }
 }
 
