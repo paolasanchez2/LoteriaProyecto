@@ -205,9 +205,7 @@ namespace LoteriaProyecto
                         continue;
 
                     if (idsEncontrados.Contains(carta.Id))
-                    {
                         return true;
-                    }
 
                     idsEncontrados.Add(carta.Id);
                 }

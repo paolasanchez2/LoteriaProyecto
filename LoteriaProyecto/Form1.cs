@@ -393,6 +393,8 @@ namespace LoteriaProyecto
                 return;
             }
 
+            MessageBox.Show("Estoy validando: " + cmbTipoTabla.Text);
+
             if (!ValidarTipoDeTablas())
                 return;
 
@@ -892,7 +894,7 @@ namespace LoteriaProyecto
         {
             string tipoTabla = cmbTipoTabla.Text;
 
-            if (tipoTabla == "Cartas dobles permitidas")
+            if (tipoTabla == "Cartas dobles")
                 return true;
 
             for (int i = 0; i < juego.TablerosJugador.Count; i++)
@@ -902,7 +904,7 @@ namespace LoteriaProyecto
                     MessageBox.Show(
                         $"La Tabla {i + 1} contiene cartas repetidas.\n\n" +
                         "El modo 'Cartas únicas' no permite cartas duplicadas.\n" +
-                        "Cambia esa tabla o selecciona 'Cartas dobles permitidas'.",
+                        "Cambia esa tabla o selecciona 'Cartas dobles'.",
                         "Tabla no permitida",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
