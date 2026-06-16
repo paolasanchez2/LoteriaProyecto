@@ -20,6 +20,7 @@ namespace LoteriaProyecto
         private bool validacionAbierta = false;
         private List<string> reclamantes = new List<string>();
         private List<ComboBox> combosFavoritosPorTabla;
+        private bool esperandoValidacionCliente = false;
 
         public Form1()
         {
@@ -184,13 +185,49 @@ namespace LoteriaProyecto
 
         private void ProcesarMensajeRed(string mensaje)
         {
-
             this.Invoke((MethodInvoker)delegate
             {
+                if (mensaje == "VALIDAR_TABLAS")
+                {
+                    if (ValidarTipoDeTablas())
+                    {
+                        red.EnviarMensaje("VALIDACION_CLIENTE|OK");
+                    }
+                    else
+                    {
+                        red.EnviarMensaje("VALIDACION_CLIENTE|ERROR");
+                    }
+
+                    return;
+                }
+
+                if (mensaje.StartsWith("VALIDACION_CLIENTE|"))
+                {
+                    string resultado = mensaje.Split('|')[1];
+
+                    if (resultado == "OK")
+                    {
+                        MessageBox.Show("Cliente validado correctamente. Iniciando cartas.");
+
+                        timerCartas.Interval = (int)numVelocidad.Value * 1000;
+                        timerCartas.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "El cliente tiene tablas inválidas.\n" +
+                            "No se puede iniciar la partida en modo 'Cartas únicas'.",
+                            "Validación fallida",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+
+                    return;
+                }
 
                 if (mensaje.StartsWith("CHAT|"))
                 {
-                    string[] datos = mensaje.Split('|');
+                    string[] datos = mensaje.Split(new char[] { '|' }, 3);
 
                     string nombre = datos[1];
                     string texto = datos[2];
@@ -204,7 +241,6 @@ namespace LoteriaProyecto
                 {
                     int idCarta = int.Parse(mensaje.Split(':')[1]);
 
-
                     juego.SincronizarCartaPorId(idCarta);
                     AgregarAlHistorialVisual(juego.CartaActual);
                     lstHistorial.Items.Insert(0, $"{idCarta} - {juego.CartaActual.Nombre}");
@@ -212,16 +248,24 @@ namespace LoteriaProyecto
                     try
                     {
                         string rutaCarpeta = "imagenes";
+
                         if (System.IO.Directory.Exists(rutaCarpeta))
                         {
-                            string[] archivos = System.IO.Directory.GetFiles(rutaCarpeta, idCarta + " - *.jpg");
+                            string[] archivos =
+                                System.IO.Directory.GetFiles(rutaCarpeta, idCarta + " - *.jpg");
+
                             if (archivos.Length > 0)
                             {
                                 picCartaActual.Image = Image.FromFile(archivos[0]);
                             }
                         }
                     }
-                    catch (Exception) { /* Ignorar si hay problemas de carga visual */ }
+                    catch
+                    {
+                        // Ignorar problemas de carga visual
+                    }
+
+                    return;
                 }
 
                 if (mensaje.StartsWith("RECLAMO_LOTERIA|"))
@@ -248,17 +292,19 @@ namespace LoteriaProyecto
                     int cantidadTablasServidor = int.Parse(tablasDelServidor);
 
                     cmbModoJuego.Text = modoDelServidor;
-
                     numCantidadTablas.Value = cantidadTablasServidor;
-
                     numVelocidad.Value = velocidadDelServidor;
-                    timerCartas.Interval = velocidadDelServidor * 1000;
                     cmbTipoTabla.Text = tipoTablaDelServidor;
 
+                    timerCartas.Interval = velocidadDelServidor * 1000;
+
                     IniciarTableroCliente();
+
+                    return;
                 }
             });
         }
+        
         private void IniciarTableroCliente()
         {
             lstHistorial.Items.Clear();
@@ -393,10 +439,16 @@ namespace LoteriaProyecto
                 return;
             }
 
-            MessageBox.Show("Estoy validando: " + cmbTipoTabla.Text);
-
             if (!ValidarTipoDeTablas())
                 return;
+
+            if (soyServidor)
+            {
+                red.EnviarMensaje("VALIDAR_TABLAS");
+
+                MessageBox.Show("Validando tablas del cliente...");
+                return;
+            }
 
             timerCartas.Interval = (int)numVelocidad.Value * 1000;
             timerCartas.Start();
