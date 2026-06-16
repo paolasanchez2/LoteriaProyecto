@@ -62,9 +62,9 @@
             this.timerValidacion = new System.Windows.Forms.Timer(this.components);
             this.flpTableros = new System.Windows.Forms.FlowLayoutPanel();
             this.gbChat = new System.Windows.Forms.GroupBox();
-            this.txtHistorialChat = new System.Windows.Forms.TextBox();
-            this.txtMensajeChat = new System.Windows.Forms.TextBox();
             this.btnEnviarChat = new System.Windows.Forms.Button();
+            this.txtMensajeChat = new System.Windows.Forms.TextBox();
+            this.txtHistorialChat = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picCartaActual)).BeginInit();
             this.flpHistorialImagenes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numVelocidad)).BeginInit();
@@ -108,7 +108,6 @@
             this.picCartaActual.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picCartaActual.TabIndex = 2;
             this.picCartaActual.TabStop = false;
-            
             // 
             // timerCartas
             // 
@@ -271,7 +270,7 @@
             this.gbConfiguracion.Controls.Add(this.numVelocidad);
             this.gbConfiguracion.Controls.Add(this.cmbModoJuego);
             this.gbConfiguracion.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbConfiguracion.Location = new System.Drawing.Point(1744, 13);
+            this.gbConfiguracion.Location = new System.Drawing.Point(1678, 13);
             this.gbConfiguracion.Name = "gbConfiguracion";
             this.gbConfiguracion.Size = new System.Drawing.Size(283, 276);
             this.gbConfiguracion.TabIndex = 20;
@@ -314,7 +313,6 @@
             this.label4.Size = new System.Drawing.Size(160, 22);
             this.label4.TabIndex = 28;
             this.label4.Text = "Cantidad de tablas";
-            
             // 
             // label3
             // 
@@ -324,7 +322,6 @@
             this.label3.Size = new System.Drawing.Size(165, 22);
             this.label3.TabIndex = 20;
             this.label3.Text = "Velocidad por carta";
-            
             // 
             // gbControlesJuego
             // 
@@ -333,7 +330,7 @@
             this.gbControlesJuego.Controls.Add(this.btnDetenerAutomatico);
             this.gbControlesJuego.Controls.Add(this.btnAutomatico);
             this.gbControlesJuego.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbControlesJuego.Location = new System.Drawing.Point(1750, 344);
+            this.gbControlesJuego.Location = new System.Drawing.Point(1680, 304);
             this.gbControlesJuego.Name = "gbControlesJuego";
             this.gbControlesJuego.Size = new System.Drawing.Size(282, 213);
             this.gbControlesJuego.TabIndex = 21;
@@ -348,7 +345,7 @@
             this.groupBox3.Controls.Add(this.btnModoServidor);
             this.groupBox3.Controls.Add(this.btnModoCliente);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(1750, 574);
+            this.groupBox3.Location = new System.Drawing.Point(1682, 537);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(280, 248);
             this.groupBox3.TabIndex = 22;
@@ -362,7 +359,7 @@
             this.groupBox4.Controls.Add(this.flpHistorialImagenes);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(1340, 13);
+            this.groupBox4.Location = new System.Drawing.Point(1308, 13);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(360, 783);
             this.groupBox4.TabIndex = 23;
@@ -440,24 +437,6 @@
             this.gbChat.TabStop = false;
             this.gbChat.Text = "Chat";
             // 
-            // txtHistorialChat
-            // 
-            this.txtHistorialChat.Location = new System.Drawing.Point(6, 25);
-            this.txtHistorialChat.Multiline = true;
-            this.txtHistorialChat.Name = "txtHistorialChat";
-            this.txtHistorialChat.ReadOnly = true;
-            this.txtHistorialChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtHistorialChat.Size = new System.Drawing.Size(658, 88);
-            this.txtHistorialChat.TabIndex = 0;
-            // 
-            // txtMensajeChat
-            // 
-            this.txtMensajeChat.Location = new System.Drawing.Point(7, 120);
-            this.txtMensajeChat.Name = "txtMensajeChat";
-            this.txtMensajeChat.Size = new System.Drawing.Size(314, 26);
-            this.txtMensajeChat.TabIndex = 1;
-            this.txtMensajeChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMensajeChat_KeyDown);
-            // 
             // btnEnviarChat
             // 
             this.btnEnviarChat.Location = new System.Drawing.Point(561, 120);
@@ -467,6 +446,24 @@
             this.btnEnviarChat.Text = "Enviar";
             this.btnEnviarChat.UseVisualStyleBackColor = true;
             this.btnEnviarChat.Click += new System.EventHandler(this.btnEnviarChat_Click);
+            // 
+            // txtMensajeChat
+            // 
+            this.txtMensajeChat.Location = new System.Drawing.Point(7, 120);
+            this.txtMensajeChat.Name = "txtMensajeChat";
+            this.txtMensajeChat.Size = new System.Drawing.Size(314, 26);
+            this.txtMensajeChat.TabIndex = 1;
+            this.txtMensajeChat.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMensajeChat_KeyDown);
+            // 
+            // txtHistorialChat
+            // 
+            this.txtHistorialChat.Location = new System.Drawing.Point(6, 25);
+            this.txtHistorialChat.Multiline = true;
+            this.txtHistorialChat.Name = "txtHistorialChat";
+            this.txtHistorialChat.ReadOnly = true;
+            this.txtHistorialChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtHistorialChat.Size = new System.Drawing.Size(658, 88);
+            this.txtHistorialChat.TabIndex = 0;
             // 
             // Form1
             // 
